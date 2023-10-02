@@ -10,7 +10,7 @@ export const TextInput = ({ label, className }) => {
       <label className="bg-white left-[10px] absolute top-[-12px]" htmlFor="">
         {label}
       </label>
-      <input className={`${styles.Input} w-[100%] h-[40px]`} type="text" />
+      <input className={`${styles.Input} w-[100%] text-[12px] pl-[10px] font-[500] h-[40px]`} type="text" />
     </div>
   );
 };
