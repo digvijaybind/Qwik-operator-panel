@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { showModals } from "@/store/slices";
-import Modal from "../../components/Modal";
+import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 export default function Landing() {
   const showModal = useSelector((state) => state);
@@ -39,12 +39,12 @@ export default function Landing() {
   const dispatch = useDispatch();
   return (
     <div className="">
-      <div className="relative flex justify-center px-[5%] pt-[10px] iteems-center">
-        <img
-          className="absolute top-[5px] left-[10px] "
-          src="/images/man.svg"
-          alt=""
-        />
+      <div className="relative flex justify-center px-[5%] pt-[10px] items-center">
+        <div className="absolute flex items-center top-[5px] left-[10px] ">
+          <img src="/images/man.svg" alt="" />
+          <p className="ml-[10px]">Qwiklif Admin</p>
+        </div>
+
         <img src="/images/logo.png" alt="logo" />
       </div>
       <div className="px-[5%]">
