@@ -1,0 +1,7 @@
+.Top_container{
+    width: calc(100vw - 200px);
+    position: fixed;
+    top: 0;
+    left: 200px;
+
+}
