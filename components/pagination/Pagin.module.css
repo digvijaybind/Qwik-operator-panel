@@ -4,3 +4,9 @@
   left: 200px;
   width: calc(100vw - 200px);
 }
+@media screen and (max-width: 639px) {
+  .Container {
+    width: 100vw;
+    left: 0;
+  }
+}

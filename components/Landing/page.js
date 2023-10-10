@@ -4,8 +4,7 @@ import { showModals } from "@/store/slices";
 import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 export default function Landing() {
-  const showModal = useSelector((state) => state);
-  console.log(showModal);
+  
   const header = [
     "Id",
     "Company Name",
@@ -38,7 +37,7 @@ export default function Landing() {
   ];
   const dispatch = useDispatch();
   return (
-    <div className="ml-[200px] ">
+    <div className="ml-[200px] sm:ml-0 ">
       <div className="">
         <div className="flex items-center px-[20px] py-[20px]">
           <p className="mr-[30px]">All(56)</p>
@@ -62,7 +61,7 @@ export default function Landing() {
               Add Aircraft Data
             </p>
           </button>
-          <div className="flex">
+          <div className="flex sm:hidden">
             <svg
               className="mr-[10px]"
               xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +114,7 @@ export default function Landing() {
             </svg>
           </div>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto h-[90vh]">
           <table className="w-[1300px] ">
             <thead>
               <tr className="">

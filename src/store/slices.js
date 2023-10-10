@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   showModal: false,
+  showNav: false,
 };
 const operatorSlice = createSlice({
   name: "operator",
@@ -10,8 +11,11 @@ const operatorSlice = createSlice({
     showModals(state) {
       state.showModal = !state.showModal;
     },
+    showNav(state) {
+      state.showNav = !state.showNav;
+    },
   },
 });
 
-export const { showModals } = operatorSlice.actions;
+export const { showModals,showNav } = operatorSlice.actions;
 export default operatorSlice.reducer;

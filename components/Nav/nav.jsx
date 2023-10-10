@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
 const Nav = () => {
   const navs = [
     {
@@ -61,21 +66,15 @@ const Nav = () => {
       name: "GPS or Maps",
     },
     {
-      icon: (
-       <img src="/images/weather.svg" alt="we" />
-      ),
+      icon: <img src="/images/weather.svg" alt="we" />,
       name: "Weather Conditions",
     },
     {
-      icon: (
-      <img src="/images/medical.png" alt="" />
-      ),
+      icon: <img src="/images/medical.png" alt="" />,
       name: "Medical equipments",
     },
     {
-      icon: (
-       <img src="/images/fly.png" alt="" />
-      ),
+      icon: <img src="/images/fly.png" alt="" />,
       name: "Aircraft status",
     },
     {
@@ -145,9 +144,14 @@ const Nav = () => {
       name: "Logout",
     },
   ];
-
+  const showNav = useSelector((state) => state.operator.showNav);
+  console.log(showNav);
   return (
-    <div className="fixed top-0 left-0 w-[200px] z-[200] h-[100vh] bg-[#40D1F0] p-[10px]">
+    <div
+      className={`${
+        showNav==true ? "block sm:block" : "block sm:hidden"
+      } fixed top-0 left-0 w-[200px] z-[400] h-[100vh] bg-[#40D1F0] p-[10px]`}
+    >
       <div className="flex items-center ">
         <img src="/images/man.png" alt="" />
         <p className="ml-[10px] text-black">Qwiklif Admin</p>
