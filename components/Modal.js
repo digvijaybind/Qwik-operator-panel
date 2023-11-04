@@ -1,16 +1,56 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "./Form/TextInput";
-import { showModals } from "@/store/slices";
+import {useDispatch, useSelector} from "react-redux";
+import {TextInput} from "./Form/TextInput";
+import {showModals} from "@/store/slices";
+import {useState} from "react";
 const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
   console.log(show);
+  // const [formData, setFormData] = useState({
+  //   contact_number,
+  //   Aircraft_type,
+  //   Tail_sign,
+  //   location,
+  //   charges_per_hour,
+  //   speed,
+  //   date,
+  // });
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setFormData({...formData, [name]: value});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-headers": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("API response", responseData);
+      } else {
+        console.error("API ERROR", response.statusText);
+      }
+    } catch (error) {
+      console.error("ERROR", error);
+    }
+  };
   return (
-    <div className={`${show ? "block" : "hidden"} w-[100vw] h-[100vh] absolute top-0 left-0`}>
+    <div
+      className={`${
+        show ? "block" : "hidden"
+      } w-[100vw] h-[100vh] absolute top-0 left-0`}
+    >
       <div className="w-[100vw] h-[100vh] bg-white opacity-[50%] z-[200] absolute top-0 left-0 "></div>
       <div
-        className={`bg-white shadow-md  absolute top-[80px]  z-[300] left-[50%] transform translate-x-[-50%]  w-[500px] px-[30px] px-[40px]`}
+        className={`bg-white shadow-md  absolute top-[80px]  z-[300] left-[50%] transform translate-x-[-50%]  w-[500px] px-[30px] px-[40px] sm:w-[310px]`}
       >
         <div onClick={() => dispatch(showModals())}>
           <svg
@@ -30,20 +70,14 @@ const Modal = () => {
           </svg>
         </div>
 
-        <h1 className="text-[40px] my-[20px]">Add New Data</h1>
+        <h1 className="text-[40px] my-[20px] sm:text-[30px]">Add New Data</h1>
         <div className="w-[100%]">
           <TextInput className={"w-[100%]"} label={"Number"}></TextInput>
-          <div className="flex justify-between w-[100%]">
-            <TextInput className={"w-[48%]"} label={"Company Name"}></TextInput>
-            <TextInput
-              className={"w-[48%]"}
-              label={"Email Address"}
-            ></TextInput>
-          </div>
+
           <div className="flex justify-between w-[100%]">
             <TextInput
-              className={"w-[48%]"}
-              label={"Contact Number"}
+              className={"w-[48%] sm:w-[50%]"}
+              label={"Contact No."}
             ></TextInput>
             <TextInput
               className={"w-[48%]"}
@@ -52,13 +86,12 @@ const Modal = () => {
           </div>
           <div className="flex justify-between w-[100%]">
             <TextInput className={"w-[48%]"} label={"Tail Sign"}></TextInput>
-            <TextInput className={"w-[48%]"} label={"Password"}></TextInput>
           </div>
           <div className="flex justify-between w-[100%]">
             <TextInput className={"w-[48%]"} label={"Location"}></TextInput>
             <TextInput
-              className={"w-[48%]"}
-              label={"Charges Per Hour"}
+              className={"w-[48%] sm:text[8px]"}
+              label={"Charges/hr"}
             ></TextInput>
           </div>
           <div className="flex justify-between w-[100%]">
@@ -69,7 +102,10 @@ const Modal = () => {
             <input type="checkbox" className=" mr-[10px]" />
             <p>Securely save my information for 1-click checkout</p>
           </div>
-          <button className="w-[100%] text-[14px] text-[#11211] font-semibold py-[8px] mb-[20px] bg-[#40D1F0] rounded-[4px]">
+          <button
+            className="w-[100%] text-[14px] text-[#11211] font-semibold py-[8px] mb-[20px] bg-[#40D1F0] rounded-[4px]"
+            onClick={handleSubmit}
+          >
             Add data
           </button>
         </div>
