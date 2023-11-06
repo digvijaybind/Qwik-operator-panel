@@ -2,7 +2,7 @@ import styles from "./Pagin.module.css";
 const Pagin = () => {
   return (
     <>
-      <div className="hidden fixed bottom-0 pt-[10px] left-0 sm:block">
+      <div className="hidden bg-white fixed bottom-0 pt-[10px] left-0 sm:block">
         <div className="w-[100vw] flex justify-between items-center py-[10px] px-[50px]">
           <p>Previous</p>
           <div className="flex">

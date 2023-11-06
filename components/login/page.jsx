@@ -1,26 +1,28 @@
 "use client";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
-import {Text} from "../Text";
-import {Button} from "../Button";
+import { useRouter } from "next/navigation";
+import { Text } from "../Text";
+import { Button } from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
+import axios from "axios";
 import useApiPost from "../../hooks/useApipost";
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
     email_address: "",
     password: "",
   });
-  const {data, error, loading, postData} = useApiPost();
+  const { data, error, loading, postData } = useApiPost();
+  const router=useRouter()
   const handleChange = (e) => {
-    setFormdData({...formData, [e.target.name]: e.target.value});
+    setFormdData({ ...formData, [e.target.name]: e.target.value });
   };
   console.log("formData", formData);
   const handleSubmit = () => {
     debugger;
     postData("http://52.71.253.144:3000/operator/login", formData);
-
   };
 
   console.log("formData", formData);
@@ -97,7 +99,23 @@ const LoginComponent = () => {
                 <div className="flex flex-col items-start justify-start w-[512px] sm:w-full">
                   <Button
                     className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                    onClick={() => handleSubmit()}
+                    onClick={() => {
+                      axios
+                        .post(
+                          "http://54.82.252.144:8000/operator/login",
+                          formData
+                        )
+                        .then((response) => {
+                          localStorage.setItem("token", response.data.token);
+                          router.push("/dashboard");
+                          
+                          console.log(data);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                      console.log("clicked");
+                    }}
                   >
                     Login
                   </Button>

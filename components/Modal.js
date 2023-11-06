@@ -1,25 +1,31 @@
 "use client";
-import {useDispatch, useSelector} from "react-redux";
-import {TextInput} from "./Form/TextInput";
-import {showModals} from "@/store/slices";
-import {useState} from "react";
-import Datepicker from "react-tailwindcss-datepicker";
+import { useDispatch, useSelector } from "react-redux";
+import { TextInput } from "./Form/TextInput";
+import { showModals } from "@/store/slices";
+import { useState } from "react";
+import { DateInput } from "./Form/TextInput";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
   console.log(show);
-  const [formData, setFormdData] = useState({
+  const [formData, setFormData] = useState({
     Sr_No: "",
     Tail_Sign: "",
     Location: "",
     Charges_hr: "",
-    Speed:""
+    Speed: "",
   });
-
-  const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue);
-    setValue(newValue);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  // const handleValueChange = (newValue) => {
+  //   console.log("newValue:", newValue);
+  //   setValue(newValue);
+  // };
 
   // const [formData, setFormData] = useState({
   //   contact_number,
@@ -34,31 +40,36 @@ const Modal = () => {
     endDate: null,
   });
   const handleInputChange = (e) => {
-    setFormData({...formData});
+    setFormData({ ...formData });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formData.date instanceof Date) {
-      formData.date = formData.date.toISOString();
-    }
-    try {
-      const response = await fetch("", {
-        method: "POST",
-        headers: {
-          "Content-headers": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("API response", responseData);
-      } else {
-        console.error("API ERROR", response.statusText);
-      }
-    } catch (error) {
-      console.error("ERROR", error);
-    }
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (formData.date instanceof Date) {
+  //     formData.date = formData.date.toISOString();
+  //   }
+  //   try {
+  //     const response = await fetch("", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-headers": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       console.log("API response", responseData);
+  //     } else {
+  //       console.error("API ERROR", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("ERROR", error);
+  //   }
+  // };
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
   };
   return (
     <div
@@ -94,15 +105,24 @@ const Modal = () => {
             className={"w-[100%]"}
             label={"Sr_No."}
             name="Sr_No"
-            onChange={handleInputChange}
+            register={register("sr_no")}
+            // onChange={handleInputChange}
           ></TextInput>
 
           <div className="flex justify-between w-[100%]">
             <TextInput
               className={"w-[48%]"}
-              label={"Tail_Sign"}
+              label={"Type"}
+              name="Aircraft_type"
+              // onChange={handleInputChange}
+              register={register("type")}
+            ></TextInput>
+            <TextInput
+              className={"w-[48%]"}
+              label={"tail_sign"}
               name="Tail_Sign"
-              onChange={handleInputChange}
+              // onChange={handleInputChange}
+              register={register("Tail_sign")}
             ></TextInput>
           </div>
           <div className="flex justify-between w-[100%]">
@@ -110,13 +130,15 @@ const Modal = () => {
               className={"w-[48%]"}
               label={"Location"}
               name="Location"
-              onChange={handleInputChange}
+              register={register("location")}
+              // onChange={handleInputChange}
             ></TextInput>
             <TextInput
               className={"w-[48%] sm:text[8px]"}
               label={"Charges/hr"}
+              register={register("charges_per_hour")}
               name="Charges_hr"
-              onChange={handleInputChange}
+              // onChange={handleInputChange}
             ></TextInput>
           </div>
           <div className="flex justify-between w-[100%]">
@@ -124,15 +146,14 @@ const Modal = () => {
               className={"w-[48%]"}
               label={"Speed"}
               name="Speed"
-              onChange={handleInputChange}
+              register={register("speed")}
+              // onChange={handleInputChange}
             ></TextInput>
-            <div>
-              <Datepicker
-                value={value}
-                asSingle={true}
-                onChange={handleValueChange}
-              />
-            </div>
+            <DateInput
+              label={"Date"}
+              register={register("date")}
+              className={"w-[48%] "}
+            ></DateInput>
           </div>
           <div className="flex my-[10px]">
             <input type="checkbox" className=" mr-[10px]" />
@@ -140,7 +161,39 @@ const Modal = () => {
           </div>
           <button
             className="w-[100%] text-[14px] text-[#11211] font-semibold py-[8px] mb-[20px] bg-[#40D1F0] rounded-[4px]"
-            onClick={handleSubmit}
+            onClick={handleSubmit((data) => {
+              console.log(data, token);
+              axios
+                .post(
+                  "http://54.82.252.144:8000/operator/addAircraftdeatils",
+                  {
+                    sr_no: Number(data.sr_no),
+                    Aircraft_type: "Learjet 45",
+                    Tail_sign: data.Tail_sign,
+                    location: data?.location,
+                    charges_per_hour: Number(data.charges_per_hour),
+                    speed: Number(data.speed),
+                    date: data.date,
+                  },
+                  // {
+                  //   sr_no: Number(data.sr_no),
+                  //   Aircraft_type: data.Aircraft_type,
+                  //   Tail_sign: data.Tail_sign,
+                  //   location: data.location,
+                  //   charges_per_hour: Number(data.charges_per_hour),
+                  //   speed: Number(data.speed),
+                  //   date: "2023-11-06",
+                  // },
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  }
+                )
+                .then((response) => {
+                  console.log(response);
+                  dispatch(showModals())
+                })
+                .catch((err) => console.log(err));
+            })}
           >
             Add data
           </button>

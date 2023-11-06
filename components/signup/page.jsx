@@ -1,11 +1,13 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import Qwikliflogo from "../../public/images/logo.png";
 import Image from "next/image";
-import {Text} from "../Text";
-import {Button} from "../Button";
+import { Text } from "../Text";
+import { Button } from "../Button";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import useApiPost from "../../hooks/useApipost";
 const SignupComponent = () => {
   const [formData, setFormdData] = useState({
@@ -15,15 +17,22 @@ const SignupComponent = () => {
     country_name: "",
     password: "",
   });
-  const {data, error, loading, postData} = useApiPost();
+  const { data, error, loading, postData } = useApiPost();
+  const router = useRouter();
   const handleChange = (e) => {
-    setFormdData({...formData, [e.target.name]: e.target.value});
+    setFormdData({ ...formData, [e.target.name]: e.target.value });
   };
   console.log("formData", formData);
   const handleSubmit = () => {
-    postData("http://52.71.253.144:3000/operator/register", formData);
+    axios
+      .post("54.82.252.144:8000/operator/register", formData)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  console.log("formData", formData);
 
   return (
     <div className={`${styles.wrapper}`}>
@@ -141,7 +150,21 @@ const SignupComponent = () => {
                     <div className="flex flex-col items-start justify-start max-w-screen-sm w-full">
                       <Button
                         className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                        onClick={() => handleSubmit()}
+                        onClick={() => {
+                          axios
+                            .post(
+                              "http://54.82.252.144:8000/operator/register",
+                              formData
+                            )
+                            .then((data) => {
+                              router.push("/login");
+                              console.log(data);
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                          console.log("clicked");
+                        }}
                       >
                         Create account
                       </Button>
@@ -153,7 +176,12 @@ const SignupComponent = () => {
                       <span className="text-gray-900_01 font-montserrat font-medium">
                         Already have an account?{" "}
                       </span>
-                      <span className="text-red-A100 font-montserrat font-semibold">
+                      <span
+                        onClick={() => {
+                          router.push("/login");
+                        }}
+                        className="text-red-A100 font-montserrat font-semibold"
+                      >
                         Login
                       </span>
                     </Text>

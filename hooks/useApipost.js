@@ -1,6 +1,6 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // import {useHistory} from "react-router-dom";
 
@@ -19,9 +19,8 @@ const useApiPost = () => {
         "Content-Type": "application/json",
       };
 
-      const response = await axios.post(url, postData, {headers});
+      const response = await axios.post(url, postData, { headers });
       setData(response.data);
-
       localStorage.setItem("token", response.data.token);
       //   history.push("/");
       //   window.location.href = "/";
@@ -33,6 +32,6 @@ const useApiPost = () => {
       setLoading(false);
     }
   };
-  return {data, error, loading, postData};
+  return { data, error, loading, postData };
 };
 export default useApiPost;
