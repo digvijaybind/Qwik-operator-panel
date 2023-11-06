@@ -4,9 +4,11 @@ import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import Qwikliflogo from "../../public/images/logo.png";
 import Image from "next/image";
-import {Text} from "../Text";
-import {Button} from "../Button";
+import { Text } from "../Text";
+import { Button } from "../Button";
+import { useRouter } from "next/navigation";
 const Signup = () => {
+  const router = useRouter();
   return (
     <div className={`${styles.wrapper}`}>
       {/* <div className={`${styles.LeftWrapper}`}></div>
@@ -108,7 +110,10 @@ const Signup = () => {
                       <span className="text-gray-900_01 font-montserrat font-medium">
                         Already have an account?{" "}
                       </span>
-                      <span className="text-red-A100 font-montserrat font-semibold">
+                      <span
+                        onClick={() => router.push("/")}
+                        className="text-red-A100 cursor-pointer font-montserrat font-semibold"
+                      >
                         Login
                       </span>
                     </Text>

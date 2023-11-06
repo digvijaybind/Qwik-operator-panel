@@ -1,12 +1,24 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
-import {Text} from "../Text";
-import {Button} from "../Button";
+import useApiPost from "../../hooks/useApipost";
+import { useForm } from "react-hook-form";
+import { Text } from "../Text";
+import { Button } from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 const Login = () => {
+  const [error, showError] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const router = useRouter();
   return (
     <div className="bg-white-A700 flex flex-col font-montserrat items-center justify-start mx-auto p-14 md:px-10 sm:px-5 w-full">
       <div className="flex flex-col gap-3 items-start justify-start max-w-[1234px] mb-[83px] mx-auto w-full">
@@ -32,12 +44,14 @@ const Login = () => {
               </Text>
             </div>
             <div className="flex flex-col gap-10 items-start justify-start w-full">
+              {error ? <p>Invalid username or password</p> : null}
               <div className="flex flex-col gap-6 items-start justify-start w-full">
                 <input
                   type="text"
                   name="email_address"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="email"
+                  {...register("email_address")}
                   required
                 ></input>
                 <div className="flex flex-col h-[60px] md:h-auto items-start justify-start rounded-tl rounded-tr w-[512px] sm:w-full">
@@ -46,6 +60,7 @@ const Login = () => {
                     name="password"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="password"
+                    {...register("password")}
                     required
                   ></input>
                 </div>
@@ -78,7 +93,20 @@ const Login = () => {
                 <div className="flex flex-col items-start justify-start w-[512px] sm:w-full">
                   <Button
                     className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                    onClick={() => handleSubmit(formData)}
+                    onClick={handleSubmit((data) => {
+                      console.log(data);
+                      axios
+                        .post("http://52.71.253.144:3000/operator/login", data)
+                        .then((response) => {
+                          console.log(response?.data);
+                          if (response.data.token) {
+                            router.push("/dashboard");
+                          } else {
+                            showError(true);
+                          }
+                        })
+                        .catch((err) => console.log(err));
+                    })}
                   >
                     Login
                   </Button>
@@ -91,7 +119,10 @@ const Login = () => {
                     <span className="text-gray-900_01 font-montserrat font-medium">
                       Don’t have an account?{" "}
                     </span>
-                    <span className="text-red-A100 font-montserrat font-semibold">
+                    <span
+                      onClick={() => router.push("/signup")}
+                      className="text-red-A100 font-montserrat font-semibold"
+                    >
                       Sign up
                     </span>
                   </Text>
