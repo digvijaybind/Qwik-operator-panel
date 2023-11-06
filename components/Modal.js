@@ -3,10 +3,24 @@ import {useDispatch, useSelector} from "react-redux";
 import {TextInput} from "./Form/TextInput";
 import {showModals} from "@/store/slices";
 import {useState} from "react";
+import Datepicker from "react-tailwindcss-datepicker";
 const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
   console.log(show);
+  const [formData, setFormdData] = useState({
+    Sr_No: "",
+    Tail_Sign: "",
+    Location: "",
+    Charges_hr: "",
+    Speed:""
+  });
+
+  const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue);
+    setValue(newValue);
+  };
+
   // const [formData, setFormData] = useState({
   //   contact_number,
   //   Aircraft_type,
@@ -14,16 +28,20 @@ const Modal = () => {
   //   location,
   //   charges_per_hour,
   //   speed,
-  //   date,
   // });
-
+  const [value, setValue] = useState({
+    startDate: null,
+    endDate: null,
+  });
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    setFormData({...formData, [name]: value});
+    setFormData({...formData});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.date instanceof Date) {
+      formData.date = formData.date.toISOString();
+    }
     try {
       const response = await fetch("", {
         method: "POST",
@@ -48,7 +66,7 @@ const Modal = () => {
         show ? "block" : "hidden"
       } w-[100vw] h-[100vh] absolute top-0 left-0`}
     >
-      <div className="w-[100vw] h-[100vh] bg-white opacity-[50%] z-[200] absolute top-0 left-0 "></div>
+      <div className="w-[100vw] h-[100vh] bg-white opacity-[50%] z-[200] absolute top-0 left-0 z-100"></div>
       <div
         className={`bg-white shadow-md  absolute top-[80px]  z-[300] left-[50%] transform translate-x-[-50%]  w-[500px] px-[30px] px-[40px] sm:w-[310px]`}
       >
@@ -72,31 +90,49 @@ const Modal = () => {
 
         <h1 className="text-[40px] my-[20px] sm:text-[30px]">Add New Data</h1>
         <div className="w-[100%]">
-          <TextInput className={"w-[100%]"} label={"Number"}></TextInput>
+          <TextInput
+            className={"w-[100%]"}
+            label={"Sr_No."}
+            name="Sr_No"
+            onChange={handleInputChange}
+          ></TextInput>
 
           <div className="flex justify-between w-[100%]">
             <TextInput
-              className={"w-[48%] sm:w-[50%]"}
-              label={"Contact No."}
+              className={"w-[48%]"}
+              label={"Tail_Sign"}
+              name="Tail_Sign"
+              onChange={handleInputChange}
             ></TextInput>
+          </div>
+          <div className="flex justify-between w-[100%]">
             <TextInput
               className={"w-[48%]"}
-              label={"Aircraft Type"}
+              label={"Location"}
+              name="Location"
+              onChange={handleInputChange}
             ></TextInput>
-          </div>
-          <div className="flex justify-between w-[100%]">
-            <TextInput className={"w-[48%]"} label={"Tail Sign"}></TextInput>
-          </div>
-          <div className="flex justify-between w-[100%]">
-            <TextInput className={"w-[48%]"} label={"Location"}></TextInput>
             <TextInput
               className={"w-[48%] sm:text[8px]"}
               label={"Charges/hr"}
+              name="Charges_hr"
+              onChange={handleInputChange}
             ></TextInput>
           </div>
           <div className="flex justify-between w-[100%]">
-            <TextInput className={"w-[48%]"} label={"Speed"}></TextInput>
-            <TextInput className={"w-[48%]"} label={"Date"}></TextInput>
+            <TextInput
+              className={"w-[48%]"}
+              label={"Speed"}
+              name="Speed"
+              onChange={handleInputChange}
+            ></TextInput>
+            <div>
+              <Datepicker
+                value={value}
+                asSingle={true}
+                onChange={handleValueChange}
+              />
+            </div>
           </div>
           <div className="flex my-[10px]">
             <input type="checkbox" className=" mr-[10px]" />

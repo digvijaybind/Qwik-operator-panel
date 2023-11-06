@@ -17,12 +17,11 @@ export default function RootLayout({children}) {
     <html lang="en">
       <body className={`${inter.className}  mt-[100px]`}>
         <Providers>
-          {/* <Top></Top>
-          <Nav></Nav> */}
-          {/* {children} */}
+         
+          {children}
           {/* <Login /> */}
           {/* <Signup/> */}
-          <Login/>
+          {/* <Login /> */}
         </Providers>
       </body>
     </html>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 
 const Nav = () => {
   const navs = [
@@ -149,18 +149,18 @@ const Nav = () => {
   return (
     <div
       className={`${
-        showNav==true ? "block sm:block" : "block sm:hidden"
+        showNav == true ? "block sm:block" : "block sm:hidden"
       } fixed top-0 left-0 w-[200px] z-[400] h-[100vh] bg-[#40D1F0] p-[10px]`}
     >
       <div className="flex items-center ">
         <img src="/images/man.png" alt="" />
-        <p className="ml-[10px] text-black">Qwiklif Admin</p>
+        <p className="ml-[10px] text-black">Qwiklif Operator</p>
       </div>
       <div className="mt-[40px]">
         {navs.map((el) => (
           <div
             key={el}
-            className="text-white flex justify-start items-center py-[10px]"
+            className="text-white flex justify-start items-center py-[10px] cursor-pointer"
           >
             <div className="p-0 w-[30px] flex-shrink-0">{el.icon}</div>
             <p className="ml-[10px] text-[14px] text-white">{el.name}</p>

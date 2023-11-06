@@ -1,12 +1,30 @@
 "use client";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import Qwikliflogo from "../../public/images/logo.png";
 import Image from "next/image";
 import {Text} from "../Text";
 import {Button} from "../Button";
-const Signup = () => {
+import useApiPost from "../../hooks/useApipost";
+const SignupComponent = () => {
+  const [formData, setFormdData] = useState({
+    company_name: "",
+    email_address: "",
+    contact_number: "",
+    country_name: "",
+    password: "",
+  });
+  const {data, error, loading, postData} = useApiPost();
+  const handleChange = (e) => {
+    setFormdData({...formData, [e.target.name]: e.target.value});
+  };
+  console.log("formData", formData);
+  const handleSubmit = () => {
+    postData("http://52.71.253.144:3000/operator/register", formData);
+  };
+  console.log("formData", formData);
+
   return (
     <div className={`${styles.wrapper}`}>
       {/* <div className={`${styles.LeftWrapper}`}></div>
@@ -52,6 +70,7 @@ const Signup = () => {
                     <input
                       type="text"
                       name="company_name"
+                      onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="company_name"
                       required
@@ -61,8 +80,30 @@ const Signup = () => {
                     <input
                       type="text"
                       name="email_address"
+                      onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="email_address"
+                      required
+                    ></input>
+                  </div>
+                  <div className="flex md:flex-col flex-row gap-6 items-start justify-start w-full">
+                    <input
+                      type="text"
+                      name="contact_number"
+                      onChange={handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Contact_No"
+                      required
+                    ></input>
+                  </div>
+
+                  <div className="flex md:flex-col flex-row gap-6 items-start justify-start w-full">
+                    <input
+                      type="text"
+                      name="country_name"
+                      onChange={handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="country_name"
                       required
                     ></input>
                   </div>
@@ -70,6 +111,7 @@ const Signup = () => {
                     <input
                       type="text"
                       name="password"
+                      onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="password"
                       required
@@ -97,7 +139,10 @@ const Signup = () => {
                 <div className="flex justify-center">
                   <div className="flex flex-col gap-4 items-center justify-center w-auto md:w-full">
                     <div className="flex flex-col items-start justify-start max-w-screen-sm w-full">
-                      <Button className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full">
+                      <Button
+                        className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
+                        onClick={() => handleSubmit()}
+                      >
                         Create account
                       </Button>
                     </div>
@@ -123,4 +168,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupComponent;

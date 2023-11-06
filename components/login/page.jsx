@@ -1,12 +1,29 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import styles from "./login.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
 import {Text} from "../Text";
 import {Button} from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
-const Login = () => {
+import useApiPost from "../../hooks/useApipost";
+const LoginComponent = () => {
+  const [formData, setFormdData] = useState({
+    email_address: "",
+    password: "",
+  });
+  const {data, error, loading, postData} = useApiPost();
+  const handleChange = (e) => {
+    setFormdData({...formData, [e.target.name]: e.target.value});
+  };
+  console.log("formData", formData);
+  const handleSubmit = () => {
+    debugger;
+    postData("http://52.71.253.144:3000/operator/login", formData);
+
+  };
+
+  console.log("formData", formData);
   return (
     <div className="bg-white-A700 flex flex-col font-montserrat items-center justify-start mx-auto p-14 md:px-10 sm:px-5 w-full">
       <div className="flex flex-col gap-3 items-start justify-start max-w-[1234px] mb-[83px] mx-auto w-full">
@@ -36,6 +53,7 @@ const Login = () => {
                 <input
                   type="text"
                   name="email_address"
+                  onChange={handleChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="email"
                   required
@@ -44,6 +62,7 @@ const Login = () => {
                   <input
                     type="text"
                     name="password"
+                    onChange={handleChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="password"
                     required
@@ -78,7 +97,7 @@ const Login = () => {
                 <div className="flex flex-col items-start justify-start w-[512px] sm:w-full">
                   <Button
                     className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                    onClick={() => handleSubmit(formData)}
+                    onClick={() => handleSubmit()}
                   >
                     Login
                   </Button>
@@ -99,7 +118,7 @@ const Login = () => {
               </div>
             </div>
           </div>
-          <div className="h-[781px] relative w-[51%] xl:block md:hidden sm:hidden">
+          <div className="h-[781px] relative w-[51%] xl:block md:hidden sm:hidden ">
             <Image
               className="absolute h-[781px] inset-[0] justify-center m-auto object-cover rounded-[30px] w-full"
               src={Aeroplane}
@@ -123,4 +142,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginComponent;

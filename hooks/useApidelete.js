@@ -21,5 +21,6 @@ const useApidDelete=()=>{
             setError(error)
         }
     }
+       return {data, error, loading, deleteData};
 }
 export default useApidDelete;

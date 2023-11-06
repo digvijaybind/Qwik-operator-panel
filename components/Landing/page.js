@@ -1,18 +1,13 @@
 "use client";
 import styles from "./Landng.module.css";
-import { showModals } from "@/store/slices";
+import {showModals} from "@/store/slices";
 import Modal from "../Modal";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 export default function Landing() {
-  
   const header = [
     "Id",
-    "Company Name",
-    "E-Address",
-    "Contact No",
     "Aircraft Type",
     "Tail Sign",
-    "Password",
     "Location",
     "Charges per hour",
     "Speed",
@@ -23,12 +18,8 @@ export default function Landing() {
   ];
   const details = [
     "01",
-    "Qatar",
-    "vipin@gmail",
-    "01010101",
     "A380",
     "A380",
-    "****",
     "Dubai",
     "450$",
     "500 MILES",
@@ -120,7 +111,7 @@ export default function Landing() {
               <tr className="">
                 {header.map((data, i) => (
                   <th
-                    className="text-[12px] border border-x-0 p-[10px]"
+                    className="text-[12px] border border-x-0 p-[10px] "
                     key={i}
                   >
                     {data}
@@ -176,8 +167,6 @@ export default function Landing() {
             </tbody>
           </table>
         </div>
-
-       
       </div>
     </div>
   );
