@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "./Form/TextInput";
 import { showModals } from "@/store/slices";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateInput } from "./Form/TextInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -66,11 +66,11 @@ const Modal = () => {
   //     console.error("ERROR", error);
   //   }
   // };
-  const token = localStorage.getItem("token");
-
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+ 
   return (
     <div
       className={`${
@@ -190,7 +190,7 @@ const Modal = () => {
                 )
                 .then((response) => {
                   console.log(response);
-                  dispatch(showModals())
+                  dispatch(showModals());
                 })
                 .catch((err) => console.log(err));
             })}

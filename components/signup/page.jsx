@@ -1,4 +1,6 @@
 "use client";
+
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
@@ -23,16 +25,7 @@ const SignupComponent = () => {
     setFormdData({ ...formData, [e.target.name]: e.target.value });
   };
   console.log("formData", formData);
-  const handleSubmit = () => {
-    axios
-      .post("54.82.252.144:8000/operator/register", formData)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
 
   return (
     <div className={`${styles.wrapper}`}>

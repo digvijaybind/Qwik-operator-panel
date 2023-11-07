@@ -1,4 +1,6 @@
 "use client";
+
+/* eslint-disable */
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import Image from "next/image";
@@ -15,7 +17,7 @@ const LoginComponent = () => {
     password: "",
   });
   const { data, error, loading, postData } = useApiPost();
-  const router=useRouter()
+  const router = useRouter();
   const handleChange = (e) => {
     setFormdData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -106,9 +108,10 @@ const LoginComponent = () => {
                           formData
                         )
                         .then((response) => {
-                          localStorage.setItem("token", response.data.token);
+                           if (typeof window !== "undefined")
+                             localStorage.setItem("token", response.data.token);
                           router.push("/dashboard");
-                          
+
                           console.log(data);
                         })
                         .catch((err) => {
@@ -128,7 +131,10 @@ const LoginComponent = () => {
                     <span className="text-gray-900_01 font-montserrat font-medium">
                       Don’t have an account?{" "}
                     </span>
-                    <span className="text-red-A100 font-montserrat font-semibold">
+                    <span
+                      onClick={() => router.push("/signup")}
+                      className="text-red-A100 font-montserrat font-semibold"
+                    >
                       Sign up
                     </span>
                   </Text>

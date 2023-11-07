@@ -7,7 +7,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Landing() {
-  const token = localStorage.getItem("token");
   const [lists, setLists] = useState([]);
   const show = useSelector((state) => state.operator.showModal);
   const show1 = useSelector((state) => state.operator.showUpdateModal);
@@ -27,6 +26,7 @@ export default function Landing() {
   const [clickedBtn, setClickedBtn] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
   useEffect(() => {
+    const token = localStorage.getItem("token");
     axios
       .get(
         "http://54.82.252.144:8000/operator/getAirCraftOperatorLists",

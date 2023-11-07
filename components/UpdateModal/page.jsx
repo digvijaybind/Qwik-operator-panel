@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, DateInput } from "../Form/TextInput";
 import { showUpdateModal, setIdToBeUpdated } from "@/store/slices";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 const UpdateModal = () => {
@@ -66,7 +66,10 @@ const UpdateModal = () => {
   //     console.error("ERROR", error);
   //   }
   // };
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
   function filterEmptyProperties(obj) {
     const result = {};
 
