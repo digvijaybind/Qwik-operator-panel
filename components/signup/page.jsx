@@ -21,7 +21,7 @@ const SignupComponent = () => {
   };
   console.log("formData", formData);
   const handleSubmit = () => {
-    postData("http://52.71.253.144:3000/operator/register", formData);
+    postData("http://54.82.252.144:8000/operator/register", formData);
   };
   console.log("formData", formData);
 

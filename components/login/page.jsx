@@ -19,8 +19,7 @@ const LoginComponent = () => {
   console.log("formData", formData);
   const handleSubmit = () => {
     debugger;
-    postData("http://52.71.253.144:3000/operator/login", formData);
-
+    postData("http://54.82.252.144:8000/operator/login", formData);
   };
 
   console.log("formData", formData);
