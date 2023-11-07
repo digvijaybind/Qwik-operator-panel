@@ -20,6 +20,9 @@ export default function Landing() {
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
   };
+
+  const [clickedBtn, setClickedBtn] = useState(null);
+   const [disableBtn, setDisableBtn] = useState(false);
   useEffect(() => {
     axios
       .get(
@@ -35,7 +38,7 @@ export default function Landing() {
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [disableBtn]);
 
   const header = [
     "Id",
@@ -49,16 +52,7 @@ export default function Landing() {
     "Update",
     "Delete",
   ];
-  const details = [
-    "01",
-    "A380",
-    "A380",
-    "Dubai",
-    "450$",
-    "500 MILES",
-    "02 Oct 2023",
-    "600$",
-  ];
+ 
   const dispatch = useDispatch();
   return (
     <div className="ml-[200px] sm:ml-0 ">
@@ -155,53 +149,29 @@ export default function Landing() {
             <tbody>
               {lists ? (
                 lists.map((data1, i) => (
-                  <tr key={i}>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                  <tr key={data1._id}>
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {i + 1}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.Aircraft_type}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.Tail_sign}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.location}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.charges_per_hour}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.speed}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {formatDate(data1.date)}
                     </td>
-                    <td
-                      className="border text-center border-x-0 text-[14px]  p-[10px]"
-                      key={i}
-                    >
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.margin}
                     </td>
                     <td className="border border-x-0 cursor-pointer text-[12px]  p-[10px]">
@@ -222,7 +192,35 @@ export default function Landing() {
                       </button>
                     </td>
                     <td className="border border-x-0 text-[12px]  p-[10px]">
-                      <button className="bg-[#D97706] flex items-center px-[10px] py-[5px] rounded-[4px] text-white">
+                      <button
+                        disabled={disableBtn}
+                        onClick={() => {
+                          setClickedBtn(data1._id);
+                          setDisableBtn(true);
+                          axios
+                            .delete(
+                              `http://54.82.252.144:8000/operator/deleteAircraft/${data1._id}`,
+                              {
+                                headers: { Authorization: `Bearer ${token}` },
+                              }
+                            )
+                            .then((data) => {
+                              console.log(data);
+                              setDisableBtn(false);
+                              setClickedBtn(null);
+                            })
+                            .catch((err) => {
+                              setDisableBtn(false);
+                              setClickedBtn(null);
+                              console.log(err);
+                            });
+                        }}
+                        className={`${
+                          disableBtn && clickedBtn == data1._id
+                            ? "opacity-[20%]"
+                            : "opacity-[100%]"
+                        } bg-[#D97706] flex  items-center px-[10px] py-[5px] rounded-[4px] text-white`}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="18"

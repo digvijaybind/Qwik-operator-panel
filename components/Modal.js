@@ -168,7 +168,7 @@ const Modal = () => {
                   "http://54.82.252.144:8000/operator/addAircraftdeatils",
                   {
                     sr_no: Number(data.sr_no),
-                    Aircraft_type: "Learjet 45",
+                    Aircraft_type: data.type,
                     Tail_sign: data.Tail_sign,
                     location: data?.location,
                     charges_per_hour: Number(data.charges_per_hour),
