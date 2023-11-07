@@ -1,13 +1,16 @@
 "use client";
 import styles from "./Landng.module.css";
-import { showModals } from "@/store/slices";
+import { showModals, showUpdateModal, setIdToBeUpdated } from "@/store/slices";
 import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
+
 export default function Landing() {
   const token = localStorage.getItem("token");
   const [lists, setLists] = useState([]);
+  const show = useSelector((state) => state.operator.showModal);
+  const show1 = useSelector((state) => state.operator.showUpdateModal);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
 
@@ -22,7 +25,7 @@ export default function Landing() {
   };
 
   const [clickedBtn, setClickedBtn] = useState(null);
-   const [disableBtn, setDisableBtn] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(false);
   useEffect(() => {
     axios
       .get(
@@ -38,7 +41,7 @@ export default function Landing() {
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disableBtn]);
+  }, [disableBtn, show, show1]);
 
   const header = [
     "Id",
@@ -52,7 +55,7 @@ export default function Landing() {
     "Update",
     "Delete",
   ];
- 
+
   const dispatch = useDispatch();
   return (
     <div className="ml-[200px] sm:ml-0 ">
@@ -175,7 +178,13 @@ export default function Landing() {
                       {data1.margin}
                     </td>
                     <td className="border border-x-0 cursor-pointer text-[12px]  p-[10px]">
-                      <button className="bg-[#1D4ED8] flex items-center px-[10px] py-[5px] rounded-[4px] text-white">
+                      <button
+                        onClick={() => {
+                          dispatch(showUpdateModal());
+                          dispatch(setIdToBeUpdated(data1._id));
+                        }}
+                        className="bg-[#1D4ED8] flex items-center px-[10px] py-[5px] rounded-[4px] text-white"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="18"
