@@ -1,15 +1,28 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { TextInput, DateInput } from "../Form/TextInput";
-import { showUpdateModal, setIdToBeUpdated } from "@/store/slices";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {TextInput, DateInput} from "../Form/TextInput";
+import {
+  showUpdateModal,
+  setIdToBeUpdated,
+  setOperatorAircrafts,
+} from "@/store/slices";
+import {useCallback, useState} from "react";
+import {useForm} from "react-hook-form";
+import styles from "../../components/Form/Input.module.css";
 import axios from "axios";
 const UpdateModal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showUpdateModal);
-  const id = useSelector((state) => state.operator.idToBeUpdated);
-  console.log(id);
+  console.log("check");
+  const {idToBeUpdated, updateData, email_address} = useSelector(
+    (state) => state.operator
+  );
+  console.log("updateData", updateData);
+  console.log(idToBeUpdated);
+  const Airoperator = JSON.parse(
+    localStorage.getItem("aircraftCreatedByOPerator")
+  );
+  console.log("Airoperator", Airoperator);
   const [formData, setFormData] = useState({
     Sr_No: "",
     Tail_Sign: "",
@@ -20,8 +33,14 @@ const UpdateModal = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: {errors},
+  } = useForm({
+    Sr_No: updateData.sr_no,
+    Tail_Sign: updateData.Tail_sign,
+    Location: updateData.location,
+    Charges_hr: updateData.charges_per_hour,
+    Speed: updateData.speed,
+  });
   // const handleValueChange = (newValue) => {
   //   console.log("newValue:", newValue);
   //   setValue(newValue);
@@ -40,7 +59,7 @@ const UpdateModal = () => {
     endDate: null,
   });
   const handleInputChange = (e) => {
-    setFormData({ ...formData });
+    setFormData({...formData});
   };
 
   // const handleSubmit = async (e) => {
@@ -66,6 +85,21 @@ const UpdateModal = () => {
   //     console.error("ERROR", error);
   //   }
   // };
+
+  const loadAircraftData = useCallback(() => {
+    fetch(process.env.NEXT_PUBLIC_API_URL+"operator/operatorListsOfAircraftOPerators", {
+      headers: {Authorization: `Bearer ${token}`},
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        console.log("responseData", response);
+        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const token = localStorage.getItem("token");
   function filterEmptyProperties(obj) {
     const result = {};
@@ -93,7 +127,7 @@ const UpdateModal = () => {
   };
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {Authorization: `Bearer ${token}`},
   };
   return (
     <div
@@ -130,21 +164,45 @@ const UpdateModal = () => {
             label={"Sr_No."}
             name="Sr_No"
             register={register("sr_no")}
+            defaultValue={updateData.sr_no}
             // onChange={handleInputChange}
           ></TextInput>
 
           <div className="flex justify-between w-[100%]">
-            <TextInput
+            {/* <TextInput
               className={"w-[48%]"}
               label={"Type"}
               name="Aircraft_type"
               // onChange={handleInputChange}
               register={register("Aircraft_type")}
-            ></TextInput>
+              defaultValue={updateData.Aircraft_type}
+            ></TextInput> */}
+            <div
+              className={` flex flex-col w-[48%] my-[10px]  relative ${styles.Input}`}
+            >
+              <label
+                className="bg-white left-[10px] absolute top-[-12px] sm:text-[15px]"
+                htmlFor=""
+              >
+                Aircraft type
+              </label>
+              <select
+                className={"w-[100%] text-[14px] pl-[10px] font-[500] h-[40px]"}
+                label={"Type"}
+                name="Aircraft_type"
+                // onChange={handleInputChange}
+                {...register("type")}
+              >
+                <option value="Learjet 45">Learjet 45</option>
+                <option value="C90">C90</option>
+                <option value="Challenger 605">Challenger 605</option>
+              </select>
+            </div>
             <TextInput
               className={"w-[48%]"}
               label={"tail_sign"}
               name="Tail_Sign"
+              defaultValue={updateData.Tail_sign}
               // onChange={handleInputChange}
               register={register("Tail_sign")}
             ></TextInput>
@@ -155,6 +213,7 @@ const UpdateModal = () => {
               label={"Location"}
               name="Location"
               register={register("location")}
+              defaultValue={updateData.location}
               // onChange={handleInputChange}
             ></TextInput>
             <TextInput
@@ -162,6 +221,7 @@ const UpdateModal = () => {
               label={"Charges/hr"}
               register={register("charges_per_hour")}
               name="Charges_hr"
+              defaultValue={updateData.charges_per_hour}
               // onChange={handleInputChange}
             ></TextInput>
           </div>
@@ -171,12 +231,14 @@ const UpdateModal = () => {
               label={"Speed"}
               name="Speed"
               register={register("speed")}
+              defaultValue={updateData.speed}
               // onChange={handleInputChange}
             ></TextInput>
             <DateInput
               label={"Date"}
               register={register("date")}
               className={"w-[48%] "}
+              defaultValue={updateData.date}
             ></DateInput>
           </div>
           <div className="flex my-[10px]">
@@ -189,15 +251,16 @@ const UpdateModal = () => {
               console.log(data, token);
               axios
                 .put(
-                  `http://54.82.252.144:8000/operator/editAircraft/${id}`,
+                  `${process.env.NEXT_PUBLIC_API_URL}operator/editAircraft/${idToBeUpdated}`,
                   filterEmptyProperties(data),
 
                   {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {Authorization: `Bearer ${token}`},
                   }
                 )
                 .then((response) => {
                   console.log(response);
+                  loadAircraftData();
                   dispatch(showUpdateModal());
                 })
                 .catch((err) => console.log(err));

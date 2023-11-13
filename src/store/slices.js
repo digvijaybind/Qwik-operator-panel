@@ -1,10 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
   showModal: false,
   showUpdateModal: false,
   showNav: false,
   idToBeUpdated: null,
+  updateData: {},
+  email_address: "",
+  operatorAircrafts: [],
+  user_id: "",
 };
 const operatorSlice = createSlice({
   name: "operator",
@@ -22,8 +26,30 @@ const operatorSlice = createSlice({
     setIdToBeUpdated(state, action) {
       state.idToBeUpdated = action.payload;
     },
+    setUpdatedata(state, action) {
+      state.updateData = action.payload;
+    },
+    setEmailAddress(state, action) {
+      state.email_address = action.payload;
+    },
+    setOperatorAircrafts(state, action) {
+      state.operatorAircrafts = action.payload;
+    },
+
+    setUserId(state, action) {
+      state.user_id = action.payload;
+    },
   },
 });
 
-export const { showModals, showNav, showUpdateModal,setIdToBeUpdated } = operatorSlice.actions;
+export const {
+  showModals,
+  showNav,
+  showUpdateModal,
+  setIdToBeUpdated,
+  setUpdatedata,
+  setEmailAddress,
+  setOperatorAircrafts,
+  setUserId,
+} = operatorSlice.actions;
 export default operatorSlice.reducer;

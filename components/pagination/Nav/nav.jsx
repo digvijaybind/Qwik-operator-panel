@@ -1,12 +1,9 @@
 "use client";
 
-import {setEmailAddress, setOperatorAircrafts, setUserId} from "@/store/slices";
-import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 const Nav = () => {
-  const router = useRouter();
   const navs = [
     {
       icon: (
@@ -122,18 +119,31 @@ const Nav = () => {
       ),
       name: "Help",
     },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <g clip-path="url(#clip0_183_14292)">
+            <path
+              d="M7.412 5.4456L8.3296 6.7568C7.21455 7.53741 6.37741 8.6532 5.93979 9.94208C5.50218 11.231 5.48688 12.6258 5.89612 13.9239C6.30537 15.2221 7.11783 16.356 8.2155 17.1609C9.31317 17.9658 10.6389 18.3997 12 18.3997C13.3611 18.3997 14.6868 17.9658 15.7845 17.1609C16.8822 16.356 17.6946 15.2221 18.1039 13.9239C18.5131 12.6258 18.4978 11.231 18.0602 9.94208C17.6226 8.6532 16.7855 7.53741 15.6704 6.7568L16.588 5.4456C17.6424 6.18274 18.5031 7.16356 19.0972 8.30469C19.6912 9.44582 20.0009 10.7135 20 12C20 16.4184 16.4184 20 12 20C7.5816 20 4 16.4184 4 12C3.99908 10.7135 4.30879 9.44582 4.90283 8.30469C5.49686 7.16356 6.35764 6.18274 7.412 5.4456ZM11.2 12V4H12.8V12H11.2Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_183_14292">
+              <rect width="24" height="24" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      ),
+      name: "Logout",
+    },
   ];
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email_address");
-    localStorage.removeItem("user_id");
-    dispatch(setEmailAddress(""));
-    dispatch(setUserId(""));
-    dispatch(setOperatorAircrafts([]));
-    router.push("/");
-  };
-
   const showNav = useSelector((state) => state.operator.showNav);
   console.log(showNav);
   return (
@@ -153,41 +163,9 @@ const Nav = () => {
             className="text-white flex justify-start items-center py-[10px] cursor-pointer"
           >
             <div className="p-0 w-[30px] flex-shrink-0">{el.icon}</div>
-            <p className="ml-[10px] text-[14px] text-white cursor-pointer">
-              {el.name}
-            </p>
+            <p className="ml-[10px] text-[14px] text-white">{el.name}</p>
           </div>
         ))}
-        <div
-          className="text-white flex justify-start items-center py-[10px] cursor-pointer"
-          onClick={handleLogout}
-        >
-          <div className="p-0 w-[30px] flex-shrink-0">
-            {" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <g clip-path="url(#clip0_183_14292)">
-                <path
-                  d="M7.412 5.4456L8.3296 6.7568C7.21455 7.53741 6.37741 8.6532 5.93979 9.94208C5.50218 11.231 5.48688 12.6258 5.89612 13.9239C6.30537 15.2221 7.11783 16.356 8.2155 17.1609C9.31317 17.9658 10.6389 18.3997 12 18.3997C13.3611 18.3997 14.6868 17.9658 15.7845 17.1609C16.8822 16.356 17.6946 15.2221 18.1039 13.9239C18.5131 12.6258 18.4978 11.231 18.0602 9.94208C17.6226 8.6532 16.7855 7.53741 15.6704 6.7568L16.588 5.4456C17.6424 6.18274 18.5031 7.16356 19.0972 8.30469C19.6912 9.44582 20.0009 10.7135 20 12C20 16.4184 16.4184 20 12 20C7.5816 20 4 16.4184 4 12C3.99908 10.7135 4.30879 9.44582 4.90283 8.30469C5.49686 7.16356 6.35764 6.18274 7.412 5.4456ZM11.2 12V4H12.8V12H11.2Z"
-                  fill="white"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_183_14292">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-          <p className="ml-[10px] text-[14px] text-white cursor-pointer">
-            Logout
-          </p>
-        </div>
       </div>
     </div>
   );

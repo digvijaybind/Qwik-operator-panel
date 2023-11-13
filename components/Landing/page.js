@@ -1,16 +1,56 @@
 "use client";
 import styles from "./Landng.module.css";
-import { showModals, showUpdateModal, setIdToBeUpdated } from "@/store/slices";
+import {
+  showModals,
+  showUpdateModal,
+  setIdToBeUpdated,
+  setUpdatedata,
+  setEmailAddress,
+  setOperatorAircrafts,
+  setUserId,
+} from "@/store/slices";
 import Modal from "../Modal";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
-export default function Landing() {
+export default function Landing({singleOperator}) {
   const token = localStorage.getItem("token");
+  console.log("token", token);
+  const {user_id, operatorAircrafts} = useSelector((state) => state.operator);
   const [lists, setLists] = useState([]);
-  const show = useSelector((state) => state.operator.showModal);
-  const show1 = useSelector((state) => state.operator.showUpdateModal);
+
+  console.log(" user_id", user_id);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setEmailAddress(localStorage.getItem(" user_id")));
+    dispatch(setUserId(localStorage.getItem("user_id")));
+  }, []);
+
+  const loadAircraftData = useCallback(() => {
+    fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        "operator/operatorListsOfAircraftOPerators",
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        console.log("responseData", response);
+        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    loadAircraftData();
+  }, [loadAircraftData]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
 
@@ -26,23 +66,25 @@ export default function Landing() {
 
   const [clickedBtn, setClickedBtn] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
-  useEffect(() => {
-    axios
-      .get(
-        "http://54.82.252.144:8000/operator/getAirCraftOperatorLists",
+  console.log("operatorAircrafts", operatorAircrafts);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       "http://54.82.252.144/operator/getAirCraftOperatorLists",
 
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((response) => {
-        console.log(response.data.data);
-        setLists(response.data.data);
-      })
-      .catch((err) => console.log(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disableBtn, show, show1]);
+  //       {
+  //         headers: {Authorization: `Bearer ${token}`},
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data.data);
+  //       setLists(response.data.data);
+  //     })
+  //     .catch((err) => console.log(err));
 
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [disableBtn, show, show1, singleOperator]);
+  console.log("singleOperator", singleOperator);
   const header = [
     "Id",
     "Aircraft Type",
@@ -50,13 +92,12 @@ export default function Landing() {
     "Location",
     "Charges per hour",
     "Speed",
-    "Date",
+    // "Date",
     "CPH + Margin",
     "Update",
     "Delete",
   ];
 
-  const dispatch = useDispatch();
   return (
     <div className="ml-[200px] sm:ml-0 ">
       <div className="">
@@ -150,9 +191,9 @@ export default function Landing() {
               </tr>
             </thead>
             <tbody>
-              {lists ? (
-                lists.map((data1, i) => (
-                  <tr key={data1._id}>
+              {operatorAircrafts.length > 0 ? (
+                operatorAircrafts?.map((data1, i) => (
+                  <tr key={data1._id + Math.random()}>
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {i + 1}
                     </td>
@@ -171,9 +212,9 @@ export default function Landing() {
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.speed}
                     </td>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
+                    {/* <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {formatDate(data1.date)}
-                    </td>
+                    </td> */}
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.margin}
                     </td>
@@ -182,6 +223,7 @@ export default function Landing() {
                         onClick={() => {
                           dispatch(showUpdateModal());
                           dispatch(setIdToBeUpdated(data1._id));
+                          dispatch(setUpdatedata(data1));
                         }}
                         className="bg-[#1D4ED8] flex items-center px-[10px] py-[5px] rounded-[4px] text-white"
                       >
@@ -208,15 +250,16 @@ export default function Landing() {
                           setDisableBtn(true);
                           axios
                             .delete(
-                              `http://54.82.252.144:8000/operator/deleteAircraft/${data1._id}`,
+                              `${process.env.NEXT_PUBLIC_API_URL}operator/deleteAircraft/${data1._id}`,
                               {
-                                headers: { Authorization: `Bearer ${token}` },
+                                headers: {Authorization: `Bearer ${token}`},
                               }
                             )
                             .then((data) => {
                               console.log(data);
                               setDisableBtn(false);
                               setClickedBtn(null);
+                              loadAircraftData();
                             })
                             .catch((err) => {
                               setDisableBtn(false);

@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import Qwikliflogo from "../../public/images/logo.png";
 import Image from "next/image";
-import { Text } from "../Text";
-import { Button } from "../Button";
-import { useRouter } from "next/navigation";
+import {Text} from "../Text";
+import {Button} from "../Button";
+import {useRouter} from "next/navigation";
 import axios from "axios";
 import useApiPost from "../../hooks/useApipost";
 const SignupComponent = () => {
@@ -17,15 +17,15 @@ const SignupComponent = () => {
     country_name: "",
     password: "",
   });
-  const { data, error, loading, postData } = useApiPost();
+  const {data, error, loading, postData} = useApiPost();
   const router = useRouter();
   const handleChange = (e) => {
-    setFormdData({ ...formData, [e.target.name]: e.target.value });
+    setFormdData({...formData, [e.target.name]: e.target.value});
   };
   console.log("formData", formData);
   const handleSubmit = () => {
     axios
-      .post("54.82.252.144:8000/operator/register", formData)
+      .post("54.82.252.144/operator/register", formData)
       .then((data) => {
         console.log(data);
       })
@@ -153,7 +153,7 @@ const SignupComponent = () => {
                         onClick={() => {
                           axios
                             .post(
-                              "http://54.82.252.144:8000/operator/register",
+                             process.env.NEXT_PUBLIC_API_URL+"operator/register",
                               formData
                             )
                             .then((data) => {
@@ -180,7 +180,7 @@ const SignupComponent = () => {
                         onClick={() => {
                           router.push("/login");
                         }}
-                        className="text-red-A100 font-montserrat font-semibold"
+                        className="text-red-A100 font-montserrat font-semibold cursor-pointer"
                       >
                         Login
                       </span>

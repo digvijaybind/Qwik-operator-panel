@@ -1,14 +1,18 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "./Form/TextInput";
-import { showModals } from "@/store/slices";
-import { useState } from "react";
-import { DateInput } from "./Form/TextInput";
-import { useForm } from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {TextInput} from "./Form/TextInput";
+import {setOperatorAircrafts, showModals} from "@/store/slices";
+import {useCallback, useState} from "react";
+import {DateInput} from "./Form/TextInput";
+import {useForm} from "react-hook-form";
 import axios from "axios";
+import {Montserrat} from "next/font/google";
+import styles from "../components/Form/Input.module.css";
+const montserrat = Montserrat({subsets: ["latin"]});
 const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
+  const {email_address} = useSelector((state) => state.operator);
   console.log(show);
   const [formData, setFormData] = useState({
     Sr_No: "",
@@ -20,7 +24,8 @@ const Modal = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: {errors},
   } = useForm();
   // const handleValueChange = (newValue) => {
   //   console.log("newValue:", newValue);
@@ -40,8 +45,25 @@ const Modal = () => {
     endDate: null,
   });
   const handleInputChange = (e) => {
-    setFormData({ ...formData });
+    setFormData({...formData});
   };
+  const loadAircraftData = useCallback(() => {
+    fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        "operator/operatorListsOfAircraftOPerators",
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        console.log("responseData", response);
+        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -69,7 +91,7 @@ const Modal = () => {
   const token = localStorage.getItem("token");
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {Authorization: `Bearer ${token}`},
   };
   return (
     <div
@@ -110,13 +132,34 @@ const Modal = () => {
           ></TextInput>
 
           <div className="flex justify-between w-[100%]">
-            <TextInput
+            {/* <TextInput
               className={"w-[48%]"}
               label={"Type"}
               name="Aircraft_type"
               // onChange={handleInputChange}
               register={register("type")}
-            ></TextInput>
+            ></TextInput> */}
+            <div
+              className={` flex flex-col w-[48%] my-[10px]  relative ${styles.Input}`}
+            >
+              <label
+                className="bg-white left-[10px] absolute top-[-12px] sm:text-[15px]"
+                htmlFor=""
+              >
+                Aircraft type
+              </label>
+              <select
+                className={"w-[100%] text-[14px] pl-[10px] font-[500] h-[40px]"}
+                label={"Type"}
+                name="Aircraft_type"
+                // onChange={handleInputChange}
+                {...register("type")}
+              >
+                <option value="Learjet 45">Learjet 45</option>
+                <option value="C90">C90</option>
+                <option value="Challenger 605">Challenger 605</option>
+              </select>
+            </div>
             <TextInput
               className={"w-[48%]"}
               label={"tail_sign"}
@@ -165,7 +208,7 @@ const Modal = () => {
               console.log(data, token);
               axios
                 .post(
-                  "http://54.82.252.144:8000/operator/addAircraftdeatils",
+                  process.env.NEXT_PUBLIC_API_URL+"operator/addAircraftdeatils",
                   {
                     sr_no: Number(data.sr_no),
                     Aircraft_type: data.type,
@@ -185,12 +228,29 @@ const Modal = () => {
                   //   date: "2023-11-06",
                   // },
                   {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {Authorization: `Bearer ${token}`},
                   }
                 )
                 .then((response) => {
                   console.log(response);
-                  dispatch(showModals())
+                  loadAircraftData();
+                  dispatch(showModals());
+                  reset({
+                    sr_no: "",
+                    type: "",
+                    Tail_sign: "",
+                    location: "",
+                    charges_per_hour: "",
+                    speed: "",
+                    date: "",
+                  });
+                  setFormData({
+                    Sr_No: "",
+                    Tail_Sign: "",
+                    Location: "",
+                    Charges_hr: "",
+                    Speed: "",
+                  });
                 })
                 .catch((err) => console.log(err));
             })}

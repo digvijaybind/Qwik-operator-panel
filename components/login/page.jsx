@@ -1,27 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styles from "./login.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
-import { useRouter } from "next/navigation";
-import { Text } from "../Text";
-import { Button } from "../Button";
+import {useRouter} from "next/navigation";
+import {Text} from "../Text";
+import {Button} from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import axios from "axios";
 import useApiPost from "../../hooks/useApipost";
+import Landing from "../Landing/page";
+import {useDispatch} from "react-redux";
+import {setEmailAddress, setUserId} from "@/store/slices";
+
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
     email_address: "",
     password: "",
   });
-  const { data, error, loading, postData } = useApiPost();
-  const router=useRouter()
+
+  const dispatch = useDispatch();
+
+  const [singleOperator, setSingleOperator] = useState([]);
+  const {data, error, loading, postData} = useApiPost();
+  const router = useRouter();
   const handleChange = (e) => {
-    setFormdData({ ...formData, [e.target.name]: e.target.value });
+    setFormdData({...formData, [e.target.name]: e.target.value});
   };
   console.log("formData", formData);
   const handleSubmit = () => {
-    debugger;
     postData("http://52.71.253.144:3000/operator/login", formData);
   };
 
@@ -102,14 +109,25 @@ const LoginComponent = () => {
                     onClick={() => {
                       axios
                         .post(
-                          "http://54.82.252.144:8000/operator/login",
+                          process.env.NEXT_PUBLIC_API_URL + "operator/login",
                           formData
                         )
                         .then((response) => {
                           localStorage.setItem("token", response.data.token);
+                          localStorage.setItem(
+                            "email_address",
+                            response.data.email_address
+                          );
+                          localStorage.setItem("user_id", response.data.id);
+                          dispatch(
+                            setEmailAddress(response.data.email_address)
+                          );
+                          dispatch(setUserId(response.data.id));
+                          // setSingleOperator(
+                          //   response.data.aircraftCreatedByOPerator
+                          // );
+                          console.log(" response.data", response.data);
                           router.push("/dashboard");
-                          
-                          console.log(data);
                         })
                         .catch((err) => {
                           console.log(err);
@@ -128,7 +146,10 @@ const LoginComponent = () => {
                     <span className="text-gray-900_01 font-montserrat font-medium">
                       Don’t have an account?{" "}
                     </span>
-                    <span className="text-red-A100 font-montserrat font-semibold">
+                    <span
+                      className="text-red-A100 font-montserrat font-semibold"
+                      onClick={() => router.push("signup")}
+                    >
                       Sign up
                     </span>
                   </Text>
