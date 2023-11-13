@@ -40,6 +40,7 @@ const UpdateModal = () => {
     Location: updateData.location,
     Charges_hr: updateData.charges_per_hour,
     Speed: updateData.speed,
+    Aircraft_type: updateData.Aircraft_type,
   });
   // const handleValueChange = (newValue) => {
   //   console.log("newValue:", newValue);
@@ -87,9 +88,13 @@ const UpdateModal = () => {
   // };
 
   const loadAircraftData = useCallback(() => {
-    fetch(process.env.NEXT_PUBLIC_API_URL+"operator/operatorListsOfAircraftOPerators", {
-      headers: {Authorization: `Bearer ${token}`},
-    })
+    fetch(
+      process.env.NEXT_PUBLIC_API_URL +
+        "operator/operatorListsOfAircraftOPerators",
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      }
+    )
       .then((res) => res.json())
       .then((response) => {
         console.log("responseData", response);
@@ -188,10 +193,11 @@ const UpdateModal = () => {
               </label>
               <select
                 className={"w-[100%] text-[14px] pl-[10px] font-[500] h-[40px]"}
-                label={"Type"}
+                label={"Aircraft_type"}
                 name="Aircraft_type"
                 // onChange={handleInputChange}
-                {...register("type")}
+                {...register("Aircraft_type")}
+                defaultValue={updateData.Aircraft_type}
               >
                 <option value="Learjet 45">Learjet 45</option>
                 <option value="C90">C90</option>

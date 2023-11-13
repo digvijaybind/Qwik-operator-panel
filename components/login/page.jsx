@@ -29,7 +29,7 @@ const LoginComponent = () => {
   };
   console.log("formData", formData);
   const handleSubmit = () => {
-    postData("http://52.71.253.144:3000/operator/login", formData);
+    postData(process.env.NEXT_PUBLIC_API_URL + "operator/login", formData);
   };
 
   console.log("formData", formData);
