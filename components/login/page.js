@@ -1,6 +1,5 @@
 "use client";
 import React, {useState} from "react";
-import styles from "./login.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
 import {useRouter} from "next/navigation";
@@ -8,8 +7,6 @@ import {Text} from "../Text";
 import {Button} from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import axios from "axios";
-import useApiPost from "../../hooks/useApipost";
-import Landing from "../Landing/page";
 import {useDispatch} from "react-redux";
 import {setEmailAddress, setUserId} from "@/store/slices";
 

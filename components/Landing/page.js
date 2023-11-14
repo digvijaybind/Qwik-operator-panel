@@ -9,7 +9,6 @@ import {
   setOperatorAircrafts,
   setUserId,
 } from "@/store/slices";
-import Modal from "../Modal";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {useCallback, useEffect, useState} from "react";

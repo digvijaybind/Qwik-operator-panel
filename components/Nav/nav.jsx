@@ -2,7 +2,6 @@
 
 import {setEmailAddress, setOperatorAircrafts, setUserId} from "@/store/slices";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 const Nav = () => {
