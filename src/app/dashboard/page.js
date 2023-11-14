@@ -14,8 +14,8 @@ const Dashboard = () => {
       {/* <Nav />
       <Landing />
       <Modal />
-      <UpdateModal />
-      <Pagin /> */}
+      <UpdateModal /> */}
+      <Pagin />
     </main>
   );
 };
