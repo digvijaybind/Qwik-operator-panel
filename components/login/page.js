@@ -12,8 +12,7 @@ import useApiPost from "../../hooks/useApipost";
 import Landing from "../Landing/page";
 import {useDispatch} from "react-redux";
 import {setEmailAddress, setUserId} from "@/store/slices";
-import {useFormik} from "formik";
-import * as Yup from "yup";
+
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
     email_address: "",

@@ -8,8 +8,7 @@ import {Text} from "../Text";
 import {Button} from "../Button";
 import {useRouter} from "next/navigation";
 import axios from "axios";
-import {useFormik} from "formik";
-import * as Yup from "yup";
+
 const SignupComponent = () => {
   const [formData, setFormdData] = useState({
     company_name: "",
@@ -18,22 +17,7 @@ const SignupComponent = () => {
     country_name: "",
     password: "",
   });
-function validateEmail(value) {
-  let error;
-  if (!value) {
-    error = "Required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-    error = "Invalid email address";
-  }
-  return error;
-}
- function validateUsername(value) {
-   let error;
-   if (value === "admin") {
-     error = "Nice try!";
-   }
-   return error;
- }
+
   const router = useRouter();
   const handleChange = (e) => {
     setFormdData({...formData, [e.target.name]: e.target.value});
@@ -85,9 +69,8 @@ function validateEmail(value) {
                     <input
                       type="text"
                       name="company_name"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.company_name}
+                      onChange={handleChange}
+                     
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="company_name"
                       required
@@ -97,9 +80,8 @@ function validateEmail(value) {
                     <input
                       type="text"
                       name="email_address"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.email_address}
+                      onChange={handleChange}
+                  
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="email_address"
                       required
@@ -109,9 +91,8 @@ function validateEmail(value) {
                     <input
                       type="text"
                       name="contact_number"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.contact_number}
+                      onChange={handleChange}
+                  
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Contact_No"
                       required
@@ -122,9 +103,8 @@ function validateEmail(value) {
                     <input
                       type="text"
                       name="country_name"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.country_name}
+                      onChange={handleChange}
+                     
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="country_name"
                       required
@@ -134,9 +114,8 @@ function validateEmail(value) {
                     <input
                       type="text"
                       name="password"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.password}
+                      onChange={handleChange}
+                    
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="password"
                       required
