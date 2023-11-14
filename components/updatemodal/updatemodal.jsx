@@ -1,4 +1,6 @@
 "use client";
+
+
 import {useDispatch, useSelector} from "react-redux";
 import {TextInput, DateInput} from "../Form/TextInput";
 import {
@@ -6,7 +8,7 @@ import {
   setIdToBeUpdated,
   setOperatorAircrafts,
 } from "@/store/slices";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import styles from "../../components/Form/Input.module.css";
 import axios from "axios";
@@ -19,10 +21,9 @@ const UpdateModal = () => {
   );
   console.log("updateData", updateData);
   console.log(idToBeUpdated);
-  const Airoperator = JSON.parse(
-    localStorage.getItem("aircraftCreatedByOPerator")
-  );
-  console.log("Airoperator", Airoperator);
+  const [token,setToken] = useState("");
+  
+ 
   const [formData, setFormData] = useState({
     Sr_No: "",
     Tail_Sign: "",
@@ -105,7 +106,14 @@ const UpdateModal = () => {
       });
   }, []);
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage?.getItem("token");
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('token'));
+    if (items) {
+     setToken(items);
+    }
+  }, []);
   function filterEmptyProperties(obj) {
     const result = {};
 
