@@ -10,35 +10,11 @@ import Loader from "../../components/Loader/loader";
 import React, {useState, useEffect} from "react";
 import App from "next/app";
 const Home = () => {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate an asynchronous task (e.g., fetching user data)
-    const asyncTask = async () => {
-      // Replace this with your actual async logic
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // Once the task is done, set loading to false
-      setLoading(false);
-    };
-
-    asyncTask();
-  }, []);
   return (
     <main>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Login></Login>
-        </>
-      )}
+      <Login></Login>
     </main>
   );
 };
-Home.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext);
 
-  return {...appProps};
-};
 export default Home;

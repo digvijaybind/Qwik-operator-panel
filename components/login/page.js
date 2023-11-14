@@ -12,7 +12,8 @@ import useApiPost from "../../hooks/useApipost";
 import Landing from "../Landing/page";
 import {useDispatch} from "react-redux";
 import {setEmailAddress, setUserId} from "@/store/slices";
-
+import {useFormik} from "formik";
+import * as Yup from "yup";
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
     email_address: "",
@@ -22,15 +23,12 @@ const LoginComponent = () => {
   const dispatch = useDispatch();
 
   const [singleOperator, setSingleOperator] = useState([]);
-  const {data, error, loading, postData} = useApiPost();
+
   const router = useRouter();
   const handleChange = (e) => {
     setFormdData({...formData, [e.target.name]: e.target.value});
   };
   console.log("formData", formData);
-  const handleSubmit = () => {
-    postData(process.env.NEXT_PUBLIC_API_URL + "operator/login", formData);
-  };
 
   console.log("formData", formData);
   return (

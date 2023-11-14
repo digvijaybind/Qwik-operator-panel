@@ -8,7 +8,8 @@ import {Text} from "../Text";
 import {Button} from "../Button";
 import {useRouter} from "next/navigation";
 import axios from "axios";
-import useApiPost from "../../hooks/useApipost";
+import {useFormik} from "formik";
+import * as Yup from "yup";
 const SignupComponent = () => {
   const [formData, setFormdData] = useState({
     company_name: "",
@@ -17,22 +18,27 @@ const SignupComponent = () => {
     country_name: "",
     password: "",
   });
-  const {data, error, loading, postData} = useApiPost();
+function validateEmail(value) {
+  let error;
+  if (!value) {
+    error = "Required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+    error = "Invalid email address";
+  }
+  return error;
+}
+ function validateUsername(value) {
+   let error;
+   if (value === "admin") {
+     error = "Nice try!";
+   }
+   return error;
+ }
   const router = useRouter();
   const handleChange = (e) => {
     setFormdData({...formData, [e.target.name]: e.target.value});
   };
   console.log("formData", formData);
-  const handleSubmit = () => {
-    axios
-      .post("54.82.252.144/operator/register", formData)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   return (
     <div className={`${styles.wrapper}`}>
@@ -79,7 +85,9 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="company_name"
-                      onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.company_name}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="company_name"
                       required
@@ -89,7 +97,9 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="email_address"
-                      onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email_address}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="email_address"
                       required
@@ -99,7 +109,9 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="contact_number"
-                      onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.contact_number}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Contact_No"
                       required
@@ -110,7 +122,9 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="country_name"
-                      onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.country_name}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="country_name"
                       required
@@ -120,30 +134,14 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="password"
-                      onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="password"
                       required
                     ></input>
                   </div>
-                  {/* <div className="flex items-center">
-                    <input
-                      id="link-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      I agree with the{" "}
-                      <a
-                        href="#"
-                        className="text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        terms and conditions
-                      </a>
-                      .
-                    </label>
-                  </div> */}
                 </div>
                 <div className="flex justify-center">
                   <div className="flex flex-col gap-4 items-center justify-center w-auto md:w-full">
@@ -153,7 +151,8 @@ const SignupComponent = () => {
                         onClick={() => {
                           axios
                             .post(
-                             process.env.NEXT_PUBLIC_API_URL+"operator/register",
+                              process.env.NEXT_PUBLIC_API_URL +
+                                "operator/register",
                               formData
                             )
                             .then((data) => {
@@ -163,7 +162,6 @@ const SignupComponent = () => {
                             .catch((err) => {
                               console.log(err);
                             });
-                          console.log("clicked");
                         }}
                       >
                         Create account

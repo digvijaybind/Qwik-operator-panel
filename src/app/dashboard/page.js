@@ -5,7 +5,7 @@ import Top from "../../../components/Nav/top";
 import UpdateModal from "../../../components/UpdateModal/page";
 import Pagin from "../../../components/pagination/pagin";
 
-export default function Home() {
+export default function Dashboard() {
   return (
     <main>
       <Top></Top>
