@@ -13,7 +13,7 @@ const Common = () => {
       <Nav /> */}
       <Landing />
       {/* <Modal /> */}
-      <UpdateModal />
+      {/* <UpdateModal /> */}
       <Pagin />
     </div>
   );
