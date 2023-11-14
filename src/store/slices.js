@@ -9,6 +9,7 @@ const initialState = {
   email_address: "",
   operatorAircrafts: [],
   user_id: "",
+  token: "",
 };
 const operatorSlice = createSlice({
   name: "operator",
@@ -39,6 +40,9 @@ const operatorSlice = createSlice({
     setUserId(state, action) {
       state.user_id = action.payload;
     },
+    setToken(state, action) {
+      state.token = action.payload;
+    },
   },
 });
 
@@ -51,5 +55,6 @@ export const {
   setEmailAddress,
   setOperatorAircrafts,
   setUserId,
+  setToken,
 } = operatorSlice.actions;
 export default operatorSlice.reducer;

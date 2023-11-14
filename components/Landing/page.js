@@ -8,15 +8,16 @@ import {
   setEmailAddress,
   setOperatorAircrafts,
   setUserId,
+  setToken,
 } from "@/store/slices";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {useCallback, useEffect, useState} from "react";
 
 export default function Landing({singleOperator}) {
-  const [token,setToken] = useState("");
-  console.log("token", token);
-  const {user_id, operatorAircrafts} = useSelector((state) => state.operator);
+  const {user_id, operatorAircrafts, token} = useSelector(
+    (state) => state.operator
+  );
   const [lists, setLists] = useState([]);
 
   console.log(" user_id", user_id);
@@ -24,9 +25,9 @@ export default function Landing({singleOperator}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const items = JSON.parse(localStorage.getItem('token'));
+    const items = localStorage.getItem("token");
     if (items) {
-     setToken(items);
+      dispatch(setToken(items));
     }
 
     dispatch(setEmailAddress(localStorage.getItem(" user_id")));
@@ -34,22 +35,24 @@ export default function Landing({singleOperator}) {
   }, []);
 
   const loadAircraftData = useCallback(() => {
-    fetch(
-      process.env.NEXT_PUBLIC_API_URL +
-        "operator/operatorListsOfAircraftOPerators",
-      {
-        headers: {Authorization: `Bearer ${token}`},
-      }
-    )
-      .then((res) => res.json())
-      .then((response) => {
-        console.log("responseData", response);
-        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (token) {
+      fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "operator/operatorListsOfAircraftOPerators",
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("responseData", response);
+          dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [token]);
 
   useEffect(() => {
     loadAircraftData();

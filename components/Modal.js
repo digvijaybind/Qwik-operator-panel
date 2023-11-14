@@ -12,8 +12,8 @@ const montserrat = Montserrat({subsets: ["latin"]});
 const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
-  const {email_address} = useSelector((state) => state.operator);
-  const [token,setToken] = useState("");
+  const {email_address, token} = useSelector((state) => state.operator);
+
   console.log(show);
   const [formData, setFormData] = useState({
     Sr_No: "",
@@ -49,22 +49,24 @@ const Modal = () => {
     setFormData({...formData});
   };
   const loadAircraftData = useCallback(() => {
-    fetch(
-      process.env.NEXT_PUBLIC_API_URL +
-        "operator/operatorListsOfAircraftOPerators",
-      {
-        headers: {Authorization: `Bearer ${token}`},
-      }
-    )
-      .then((res) => res.json())
-      .then((response) => {
-        console.log("responseData", response);
-        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (token) {
+      fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "operator/operatorListsOfAircraftOPerators",
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("responseData", response);
+          dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [token]);
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -90,15 +92,6 @@ const Modal = () => {
   //   }
   // };
 
-  const config = {
-    headers: {Authorization: `Bearer ${token}`},
-  };
-  useEffect(() => {
-    const items = JSON.parse(localStorage.getItem('token'));
-    if (items) {
-     setToken(items);
-    }
-  }, []);
   return (
     <div
       className={`${
@@ -214,7 +207,8 @@ const Modal = () => {
               console.log(data, token);
               axios
                 .post(
-                  process.env.NEXT_PUBLIC_API_URL+"operator/addAircraftdeatils",
+                  process.env.NEXT_PUBLIC_API_URL +
+                    "operator/addAircraftdeatils",
                   {
                     sr_no: Number(data.sr_no),
                     Aircraft_type: data.type,

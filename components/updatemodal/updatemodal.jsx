@@ -1,6 +1,5 @@
 "use client";
 
-
 import {useDispatch, useSelector} from "react-redux";
 import {TextInput, DateInput} from "../Form/TextInput";
 import {
@@ -16,14 +15,13 @@ const UpdateModal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showUpdateModal);
   console.log("check");
-  const {idToBeUpdated, updateData, email_address} = useSelector(
+  const {idToBeUpdated, updateData, email_address,token} = useSelector(
     (state) => state.operator
   );
   console.log("updateData", updateData);
   console.log(idToBeUpdated);
-  const [token,setToken] = useState("");
-  
- 
+
+
   const [formData, setFormData] = useState({
     Sr_No: "",
     Tail_Sign: "",
@@ -89,31 +87,27 @@ const UpdateModal = () => {
   // };
 
   const loadAircraftData = useCallback(() => {
-    fetch(
-      process.env.NEXT_PUBLIC_API_URL +
-        "operator/operatorListsOfAircraftOPerators",
-      {
-        headers: {Authorization: `Bearer ${token}`},
-      }
-    )
-      .then((res) => res.json())
-      .then((response) => {
-        console.log("responseData", response);
-        dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+   if(token){
+     fetch(
+       process.env.NEXT_PUBLIC_API_URL +
+         "operator/operatorListsOfAircraftOPerators",
+       {
+         headers: {Authorization: `Bearer ${token}`},
+       }
+     )
+       .then((res) => res.json())
+       .then((response) => {
+         console.log("responseData", response);
+         dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+       })
+       .catch((error) => {
+         console.log(error);
+       });
+   }
+  }, [token]);
 
   // const token = localStorage?.getItem("token");
 
-  useEffect(() => {
-    const items = JSON.parse(localStorage.getItem('token'));
-    if (items) {
-     setToken(items);
-    }
-  }, []);
   function filterEmptyProperties(obj) {
     const result = {};
 

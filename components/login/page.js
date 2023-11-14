@@ -8,7 +8,7 @@ import {Button} from "../Button";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {setEmailAddress, setUserId} from "@/store/slices";
+import {setEmailAddress, setToken, setUserId} from "@/store/slices";
 
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
@@ -117,6 +117,7 @@ const LoginComponent = () => {
                             setEmailAddress(response.data.email_address)
                           );
                           dispatch(setUserId(response.data.id));
+                          dispatch(setToken(response.data.token));
                           // setSingleOperator(
                           //   response.data.aircraftCreatedByOPerator
                           // );

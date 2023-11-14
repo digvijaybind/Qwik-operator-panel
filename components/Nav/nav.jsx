@@ -1,6 +1,11 @@
 "use client";
 
-import {setEmailAddress, setOperatorAircrafts, setUserId} from "@/store/slices";
+import {
+  setEmailAddress,
+  setOperatorAircrafts,
+  setToken,
+  setUserId,
+} from "@/store/slices";
 import {useRouter} from "next/navigation";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -129,6 +134,7 @@ const Nav = () => {
     localStorage.removeItem("user_id");
     dispatch(setEmailAddress(""));
     dispatch(setUserId(""));
+    dispatch(setToken(""));
     dispatch(setOperatorAircrafts([]));
     router.push("/");
   };
