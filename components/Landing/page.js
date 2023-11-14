@@ -14,7 +14,7 @@ import axios from "axios";
 import {useCallback, useEffect, useState} from "react";
 
 export default function Landing({singleOperator}) {
-  const token = localStorage.getItem("token");
+  const [token,setToken] = useState("");
   console.log("token", token);
   const {user_id, operatorAircrafts} = useSelector((state) => state.operator);
   const [lists, setLists] = useState([]);
@@ -24,6 +24,11 @@ export default function Landing({singleOperator}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('token'));
+    if (items) {
+     setToken(items);
+    }
+
     dispatch(setEmailAddress(localStorage.getItem(" user_id")));
     dispatch(setUserId(localStorage.getItem("user_id")));
   }, []);

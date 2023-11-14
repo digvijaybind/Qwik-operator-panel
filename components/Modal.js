@@ -2,7 +2,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {TextInput} from "./Form/TextInput";
 import {setOperatorAircrafts, showModals} from "@/store/slices";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {DateInput} from "./Form/TextInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
@@ -13,6 +13,7 @@ const Modal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
   const {email_address} = useSelector((state) => state.operator);
+  const [token,setToken] = useState("");
   console.log(show);
   const [formData, setFormData] = useState({
     Sr_No: "",
@@ -88,11 +89,16 @@ const Modal = () => {
   //     console.error("ERROR", error);
   //   }
   // };
-  const token = localStorage.getItem("token");
 
   const config = {
     headers: {Authorization: `Bearer ${token}`},
   };
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('token'));
+    if (items) {
+     setToken(items);
+    }
+  }, []);
   return (
     <div
       className={`${
