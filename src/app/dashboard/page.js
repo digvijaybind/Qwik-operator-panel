@@ -5,7 +5,7 @@ import Top from "../../../components/Nav/top";
 import UpdateModal from "../../../components/UpdateModal/page";
 import Pagin from "../../../components/pagination/pagin";
 
-export default function Dashboard() {
+const Dashboard = () => {
   return (
     <main>
       <Top></Top>
@@ -16,4 +16,5 @@ export default function Dashboard() {
       <Pagin></Pagin>
     </main>
   );
-}
+};
+export default Dashboard;
