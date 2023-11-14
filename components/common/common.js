@@ -9,10 +9,10 @@ import Pagin from "../pagination/pagin";
 const Common = () => {
   return (
     <div>
-      <Top />
-      <Nav />
+      {/* <Top />
+      <Nav /> */}
       <Landing />
-      <Modal />
+      {/* <Modal /> */}
       <UpdateModal />
       <Pagin />
     </div>
