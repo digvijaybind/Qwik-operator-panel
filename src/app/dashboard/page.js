@@ -2,6 +2,8 @@
 // import Modal from "../../../components/Modal";
 // import Nav from "../../../components/Nav/nav";
 
+import Pagin from "../../../components/pagination/pagin";
+
 // import UpdateModal from "../../../components/UpdateModal/page";
 // // import Top from "../../../components/pagination/Nav/top";
 // import Pagin from "../../../components/pagination/pagin";
