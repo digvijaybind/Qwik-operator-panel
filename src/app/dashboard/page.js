@@ -3,14 +3,14 @@ import Modal from "../../../components/Modal";
 import Nav from "../../../components/Nav/nav";
 
 import UpdateModal from "../../../components/UpdateModal/page";
-import Top from "../../../components/pagination/Nav/top";
+// import Top from "../../../components/pagination/Nav/top";
 import Pagin from "../../../components/pagination/pagin";
 
 
 const Dashboard = () => {
   return (
     <main>
-      <Top />
+      {/* <Top /> */}
       <Nav />
       <Landing />
       <Modal />
