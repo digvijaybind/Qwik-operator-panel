@@ -11,7 +11,7 @@ const Common = () => {
     <div>
       {/* <Top />
       <Nav /> */}
-      <Landing />
+      {/* <Landing /> */}
       {/* <Modal /> */}
       {/* <UpdateModal /> */}
       <Pagin />
