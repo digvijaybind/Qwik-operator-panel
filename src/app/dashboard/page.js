@@ -2,6 +2,7 @@
 // import Modal from "../../../components/Modal";
 // import Nav from "../../../components/Nav/nav";
 
+import UpdateModal from "../../../components/UpdateModal/page";
 import Pagin from "../../../components/pagination/pagin";
 
 // import UpdateModal from "../../../components/UpdateModal/page";
@@ -15,8 +16,8 @@ const Dashboard = () => {
       {/* <Top /> */}
       {/* <Nav />
       <Landing />
-      <Modal />
-      <UpdateModal /> */}
+      <Modal />*/}
+      <UpdateModal />
       <Pagin />
     </main>
   );
