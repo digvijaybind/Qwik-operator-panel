@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from "./signup.module.css";
 import Aeroplane from "../../public/images/Aeroplane.png";
 import Qwikliflogo from "../../public/images/logo.png";
