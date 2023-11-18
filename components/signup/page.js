@@ -9,20 +9,55 @@ import {Button} from "../Button";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import swal from "sweetalert";
+import {useFormik} from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  company_name: Yup.string().required("Company name is required"),
+  email_address: Yup.string()
+    .email("Invalid email address")
+    .required("Email address is required"),
+  contact_number: Yup.string().required("Contact number is required"),
+  country_name: Yup.string().required("Country name is required"),
+  password: Yup.string().required("Password is required"),
+});
 const SignupComponent = () => {
-  const [formData, setFormdData] = useState({
-    company_name: "",
-    email_address: "",
-    contact_number: "",
-    country_name: "",
-    password: "",
+  // const [formData, setFormdData] = useState({
+  //   company_name: "",
+  //   email_address: "",
+  //   contact_number: "",
+  //   country_name: "",
+  //   password: "",
+  // });
+  const formik = useFormik({
+    initialValues: {
+      company_name: "",
+      email_address: "",
+      contact_number: "",
+      country_name: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      // Your existing form submission logic here
+      axios
+        .post(process.env.NEXT_PUBLIC_API_URL + "operator/register", values)
+        .then((data) => {
+          swal("Operator registration successful", {className: "white-bg"});
+          router.push("/login");
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   });
 
   const router = useRouter();
-  const handleChange = (e) => {
-    setFormdData({...formData, [e.target.name]: e.target.value});
-  };
-  console.log("formData", formData);
+  // const handleChange = (e) => {
+  //   setFormdData({...formData, [e.target.name]: e.target.value});
+  // };
+  // console.log("formData", formData);
 
   return (
     <div className={`${styles.wrapper}`}>
@@ -69,77 +104,100 @@ const SignupComponent = () => {
                     <input
                       type="text"
                       name="company_name"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.company_name}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="company_name"
                       required
                     ></input>
                   </div>
+                  {formik.touched.company_name && formik.errors.company_name ? (
+                    <div className="text-red-500">
+                      {formik.errors.company_name}
+                    </div>
+                  ) : null}
                   <div className="flex md:flex-col flex-row gap-6 items-start justify-start w-full">
                     <input
                       type="text"
                       name="email_address"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email_address}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="email_address"
                       required
                     ></input>
                   </div>
+                  {formik.touched.email_address &&
+                  formik.errors.email_address ? (
+                    <div className="text-red-500">
+                      {formik.errors.email_address}
+                    </div>
+                  ) : null}
                   <div className="flex md:flex-col flex-row gap-6 items-start justify-start w-full">
                     <input
                       type="text"
                       name="contact_number"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.contact_number}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Contact_No"
                       required
                     ></input>
                   </div>
-
+                  {formik.touched.contact_number &&
+                  formik.errors.contact_number ? (
+                    <div className="text-red-500">
+                      {formik.errors.contact_number}
+                    </div>
+                  ) : null}
                   <div className="flex md:flex-col flex-row gap-6 items-start justify-start w-full">
                     <input
                       type="text"
                       name="country_name"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.country_name}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="country_name"
                       required
                     ></input>
                   </div>
+                  {formik.touched.country_name && formik.errors.country_name ? (
+                    <div className="text-red-500">
+                      {formik.errors.country_name}
+                    </div>
+                  ) : null}
                   <div className="flex flex-col h-[60px] md:h-auto items-start justify-start rounded-tl rounded-tr w-full">
                     <input
                       type="text"
                       name="password"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="password"
                       required
                     ></input>
                   </div>
+                  {formik.touched.password && formik.errors.password ? (
+                    <div className="text-red-500">{formik.errors.password}</div>
+                  ) : null}
                 </div>
                 <div className="flex justify-center">
                   <div className="flex flex-col gap-4 items-center justify-center w-auto md:w-full">
                     <div className="flex flex-col items-start justify-start max-w-screen-sm w-full">
                       <Button
                         className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                        onClick={() => {
-                          axios
-                            .post(
-                              process.env.NEXT_PUBLIC_API_URL +
-                                "operator/register",
-                              formData
-                            )
-                            .then((data) => {
-                              swal("operator registration successfully", {
-                                className: "white-bg",
-                              });
-                              router.push("/login");
-                              console.log(data);
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }}
+                        onClick={formik.handleSubmit}
+                        type="submit"
                       >
                         Create account
                       </Button>
