@@ -10,11 +10,73 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {setEmailAddress, setToken, setUserId} from "@/store/slices";
 import swal from "sweetalert";
-
+import {useFormik} from "formik";
+import * as Yup from "yup";
+const validationSchema = Yup.object().shape({
+  email_address: Yup.string()
+    .email("Invalid email address")
+    .required("Email address is required"),
+  password: Yup.string().required("Password is required"),
+});
 const LoginComponent = () => {
-  const [formData, setFormdData] = useState({
-    email_address: "",
-    password: "",
+  // const [formData, setFormdData] = useState({
+  //   email_address: "",
+  //   password: "",
+  // });
+
+  const formik = useFormik({
+    initialValues: {
+      email_address: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      axios
+        .post(process.env.NEXT_PUBLIC_API_URL + "operator/login", values)
+        .then((response) => {
+          const {data} = response;
+          if (data) {
+            // Passwords match on the backend
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("email_address", data.email_address);
+            localStorage.setItem("user_id", data.id);
+            dispatch(setEmailAddress(data.email_address));
+            dispatch(setUserId(data.id));
+            dispatch(setToken(data.token));
+            console.log("eneter til here", response);
+            swal("Login successful!", {
+              className: "white-bg",
+            });
+            router.push("/dashboard");
+          } else {
+            // Passwords do not match on the backend
+            if (error.response) {
+              // The request was made, but the server responded with a status code that falls out of the range of 2xx
+              swal(`Error: ${error.response.status}`, {
+                icon: "error",
+              });
+            } else if (error.request) {
+              // The request was made, but no response was received
+              swal("No response from the server", {
+                icon: "error",
+              });
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              swal("An error occurred. Please try again later.", {
+                icon: "error",
+              });
+            }
+          }
+          // console.log("response", response.data);
+        })
+        .catch((err) => {
+          // console.log(err);
+          // Handle other errors here
+          swal("An error occurred. Please try again later.", {
+            icon: "error",
+          });
+        });
+    },
   });
 
   const dispatch = useDispatch();
@@ -22,12 +84,10 @@ const LoginComponent = () => {
   const [singleOperator, setSingleOperator] = useState([]);
 
   const router = useRouter();
-  const handleChange = (e) => {
-    setFormdData({...formData, [e.target.name]: e.target.value});
-  };
-  console.log("formData", formData);
+  // const handleChange = (e) => {
+  //   setFormdData({...formData, [e.target.name]: e.target.value});
+  // };
 
-  console.log("formData", formData);
   return (
     <div className="bg-white-A700 flex flex-col font-montserrat items-center justify-start mx-auto p-14 md:px-10 sm:px-5 w-full">
       <div className="flex flex-col gap-3 items-start justify-start max-w-[1234px] mb-[83px] mx-auto w-full">
@@ -57,21 +117,35 @@ const LoginComponent = () => {
                 <input
                   type="text"
                   name="email_address"
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email_address}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="email"
                   required
                 ></input>
+                {formik.touched.email_address && formik.errors.email_address ? (
+                  <div className="text-red-500">
+                    {formik.errors.email_address}
+                  </div>
+                ) : null}
                 <div className="flex flex-col h-[60px] md:h-auto items-start justify-start rounded-tl rounded-tr w-[512px] sm:w-full">
                   <input
                     type="text"
                     name="password"
-                    onChange={handleChange}
+                    // onChange={handleChange}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="password"
                     required
                   ></input>
                 </div>
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="text-red-500">{formik.errors.password}</div>
+                ) : null}
                 <div className="flex flex-row gap-[252px] items-center justify-between w-auto sm:w-full">
                   <div className="flex flex-row gap-2 items-center justify-start w-auto">
                     <input
@@ -97,42 +171,13 @@ const LoginComponent = () => {
                   </a>
                 </div>
               </div>
+
               <div className="flex flex-col gap-4 items-start justify-start w-auto sm:w-full">
                 <div className="flex flex-col items-start justify-start w-[512px] sm:w-full">
                   <Button
                     className="cursor-pointer font-semibold h-12 leading-[normal] text-center text-sm w-full"
-                    onClick={() => {
-                      axios
-                        .post(
-                          process.env.NEXT_PUBLIC_API_URL + "operator/login",
-                          formData
-                        )
-                        .then((response) => {
-                          localStorage.setItem("token", response.data.token);
-                          localStorage.setItem(
-                            "email_address",
-                            response.data.email_address
-                          );
-                          localStorage.setItem("user_id", response.data.id);
-                          dispatch(
-                            setEmailAddress(response.data.email_address)
-                          );
-                          dispatch(setUserId(response.data.id));
-                          dispatch(setToken(response.data.token));
-                          // setSingleOperator(
-                          //   response.data.aircraftCreatedByOPerator
-                          // );
-                          console.log(" response.data", response.data);
-                          swal("Login successfully!", {
-                            className: "white-bg",
-                          });
-                          router.push("/dashboard");
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        });
-                      console.log("clicked");
-                    }}
+                    type="submit"
+                    onClick={formik.handleSubmit}
                   >
                     Login
                   </Button>
