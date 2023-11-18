@@ -35,7 +35,8 @@ const LoginComponent = () => {
         .post(process.env.NEXT_PUBLIC_API_URL + "operator/login", values)
         .then((response) => {
           const {data} = response;
-          if (data) {
+
+          if (data?.token) {
             // Passwords match on the backend
             localStorage.setItem("token", data.token);
             localStorage.setItem("email_address", data.email_address);
@@ -50,22 +51,14 @@ const LoginComponent = () => {
             router.push("/dashboard");
           } else {
             // Passwords do not match on the backend
-            if (error.response) {
-              // The request was made, but the server responded with a status code that falls out of the range of 2xx
-              swal(`Error: ${error.response.status}`, {
+            swal(
+              response?.data?.message
+                ? response?.data?.message + ". Please try again later."
+                : "Something went wrong please try again later",
+              {
                 icon: "error",
-              });
-            } else if (error.request) {
-              // The request was made, but no response was received
-              swal("No response from the server", {
-                icon: "error",
-              });
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              swal("An error occurred. Please try again later.", {
-                icon: "error",
-              });
-            }
+              }
+            );
           }
           // console.log("response", response.data);
         })
