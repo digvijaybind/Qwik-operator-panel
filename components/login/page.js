@@ -72,9 +72,12 @@ const LoginComponent = () => {
         .catch((err) => {
           // console.log(err);
           // Handle other errors here
-          swal("An error occurred. Please try again later.", {
-            icon: "error",
-          });
+          swal(
+            "An error occurred. please check email or password  Incorrect , Please try again later.",
+            {
+              icon: "error",
+            }
+          );
         });
     },
   });
