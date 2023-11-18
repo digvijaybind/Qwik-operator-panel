@@ -13,7 +13,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import {useCallback, useEffect, useState} from "react";
-
+import swal from "sweetalert";
 export default function Landing({singleOperator}) {
   const {user_id, operatorAircrafts, token} = useSelector(
     (state) => state.operator
@@ -264,6 +264,9 @@ export default function Landing({singleOperator}) {
                             )
                             .then((data) => {
                               console.log(data);
+                              swal("Aircraft details Deleted successfully", {
+                                className: "white-bg",
+                              });
                               setDisableBtn(false);
                               setClickedBtn(null);
                               loadAircraftData();

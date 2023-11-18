@@ -8,7 +8,7 @@ import {
 } from "@/store/slices";
 import {useRouter} from "next/navigation";
 import {useDispatch, useSelector} from "react-redux";
-
+import swal from "sweetalert";
 const Nav = () => {
   const router = useRouter();
   const navs = [
@@ -136,6 +136,9 @@ const Nav = () => {
     dispatch(setUserId(""));
     dispatch(setToken(""));
     dispatch(setOperatorAircrafts([]));
+    swal("Thank you for Being Qwiklif Partner!!", {
+      className: "white-bg",
+    });
     router.push("/");
   };
 

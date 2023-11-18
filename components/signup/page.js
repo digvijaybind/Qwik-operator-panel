@@ -8,7 +8,7 @@ import {Text} from "../Text";
 import {Button} from "../Button";
 import {useRouter} from "next/navigation";
 import axios from "axios";
-
+import swal from "sweetalert";
 const SignupComponent = () => {
   const [formData, setFormdData] = useState({
     company_name: "",
@@ -70,7 +70,6 @@ const SignupComponent = () => {
                       type="text"
                       name="company_name"
                       onChange={handleChange}
-                     
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="company_name"
                       required
@@ -81,7 +80,6 @@ const SignupComponent = () => {
                       type="text"
                       name="email_address"
                       onChange={handleChange}
-                  
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="email_address"
                       required
@@ -92,7 +90,6 @@ const SignupComponent = () => {
                       type="text"
                       name="contact_number"
                       onChange={handleChange}
-                  
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Contact_No"
                       required
@@ -104,7 +101,6 @@ const SignupComponent = () => {
                       type="text"
                       name="country_name"
                       onChange={handleChange}
-                     
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="country_name"
                       required
@@ -115,7 +111,6 @@ const SignupComponent = () => {
                       type="text"
                       name="password"
                       onChange={handleChange}
-                    
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="password"
                       required
@@ -135,6 +130,9 @@ const SignupComponent = () => {
                               formData
                             )
                             .then((data) => {
+                              swal("operator registration successfully", {
+                                className: "white-bg",
+                              });
                               router.push("/login");
                               console.log(data);
                             })

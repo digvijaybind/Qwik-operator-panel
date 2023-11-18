@@ -8,6 +8,7 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import {Montserrat} from "next/font/google";
 import styles from "../components/Form/Input.module.css";
+import swal from "sweetalert";
 const montserrat = Montserrat({subsets: ["latin"]});
 const Modal = () => {
   const dispatch = useDispatch();
@@ -233,6 +234,9 @@ const Modal = () => {
                 )
                 .then((response) => {
                   console.log(response);
+                  swal("Aircraft details added successfully", {
+                    className: "white-bg",
+                  });
                   loadAircraftData();
                   dispatch(showModals());
                   reset({

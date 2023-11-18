@@ -11,16 +11,16 @@ import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import styles from "../../components/Form/Input.module.css";
 import axios from "axios";
+import swal from "sweetalert";
 const UpdateModal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showUpdateModal);
   console.log("check");
-  const {idToBeUpdated, updateData, email_address,token} = useSelector(
+  const {idToBeUpdated, updateData, email_address, token} = useSelector(
     (state) => state.operator
   );
   console.log("updateData", updateData);
   console.log(idToBeUpdated);
-
 
   const [formData, setFormData] = useState({
     Sr_No: "",
@@ -87,23 +87,23 @@ const UpdateModal = () => {
   // };
 
   const loadAircraftData = useCallback(() => {
-   if(token){
-     fetch(
-       process.env.NEXT_PUBLIC_API_URL +
-         "operator/operatorListsOfAircraftOPerators",
-       {
-         headers: {Authorization: `Bearer ${token}`},
-       }
-     )
-       .then((res) => res.json())
-       .then((response) => {
-         console.log("responseData", response);
-         dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
-       })
-       .catch((error) => {
-         console.log(error);
-       });
-   }
+    if (token) {
+      fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "operator/operatorListsOfAircraftOPerators",
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("responseData", response);
+          dispatch(setOperatorAircrafts(response.aircraftCreatedByOperator));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [token]);
 
   // const token = localStorage?.getItem("token");
@@ -268,6 +268,9 @@ const UpdateModal = () => {
                 )
                 .then((response) => {
                   console.log(response);
+                  swal("Aircraft details Updated successfully", {
+                    className: "white-bg",
+                  });
                   loadAircraftData();
                   dispatch(showUpdateModal());
                 })

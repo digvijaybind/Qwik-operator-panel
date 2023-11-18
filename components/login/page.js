@@ -9,6 +9,7 @@ import Aeroplane from "../../public/images/Aeroplane.png";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {setEmailAddress, setToken, setUserId} from "@/store/slices";
+import swal from "sweetalert";
 
 const LoginComponent = () => {
   const [formData, setFormdData] = useState({
@@ -122,6 +123,9 @@ const LoginComponent = () => {
                           //   response.data.aircraftCreatedByOPerator
                           // );
                           console.log(" response.data", response.data);
+                          swal("Login successfully!", {
+                            className: "white-bg",
+                          });
                           router.push("/dashboard");
                         })
                         .catch((err) => {
