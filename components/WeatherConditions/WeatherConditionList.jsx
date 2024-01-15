@@ -13,11 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import swal from "sweetalert";
+import WeatherDetailsModal from "./WeatherDetailsModal";
 export default function WeatherEquipmentList() {
+  const [currentAircraftData, setCurrentAircraftData] = useState(null);
   const { user_id, operatorAircrafts, token } = useSelector((state) => state.operator);
-
-  console.log(" user_id", user_id);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -154,26 +153,28 @@ export default function WeatherEquipmentList() {
             </thead>
             <tbody>
               {operatorAircrafts.length > 0 ? (
-                operatorAircrafts?.map((data1, i) => (
-                  <tr key={data1._id + Math.random()}>
+                operatorAircrafts?.map((item, i) => (
+                  <tr key={item._id + Math.random()}>
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">{i + 1}</td>
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
-                      {data1.Aircraft_type}
+                      {item.Aircraft_type}
                     </td>
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
-                      {data1.location}
+                      {item.location}
                     </td>
                     <td className="border border-x-0 cursor-pointer text-[12px] p-[10px]">
                       <button
                         onClick={() => {
-                          // dispatch(showUpdateModal());
-                          // dispatch(setIdToBeUpdated(data1._id));
-                          // dispatch(setUpdatedata(data1));
+                          setCurrentAircraftData(item);
                         }}
                         className="bg-[#1D4ED8] flex items-center px-[10px] py-[5px] rounded-[4px] text-white mx-auto"
                       >
                         <p>Check Weather Condition</p>
-                        <img src="./images/weatherIcon.svg" alt="weather icon" className="w-[25px] ml-2" />
+                        <img
+                          src="./images/weatherIcon.svg"
+                          alt="weather icon"
+                          className="w-[25px] ml-2"
+                        />
                       </button>
                     </td>
                   </tr>
@@ -186,6 +187,10 @@ export default function WeatherEquipmentList() {
           </table>
         </div>
       </div>
+      <WeatherDetailsModal
+        currentAircraftData={currentAircraftData}
+        setCurrentAircraftData={setCurrentAircraftData}
+      />
     </div>
   );
 }
