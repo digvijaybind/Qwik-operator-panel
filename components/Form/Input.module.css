@@ -2,5 +2,6 @@
   border-radius: 4px;
   border: 1px solid #79747e;
   background: var(--Neutrals, #fff);
- font-family: var(--font-monteserrat);
+  font-family: var(--font-monteserrat);
+  margin-bottom: 10px;
 }

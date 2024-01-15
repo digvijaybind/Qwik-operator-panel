@@ -10,12 +10,14 @@ import {
   setUserId,
   setToken,
 } from "@/store/slices";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import swal from "sweetalert";
 export default function AircraftList() {
-  const { user_id, operatorAircrafts, token } = useSelector((state) => state.operator);
+  const {user_id, operatorAircrafts, token} = useSelector(
+    (state) => state.operator
+  );
 
   console.log(" user_id", user_id);
 
@@ -33,9 +35,13 @@ export default function AircraftList() {
 
   const loadAircraftData = useCallback(() => {
     if (token) {
-      fetch(process.env.NEXT_PUBLIC_API_URL + "operator/operatorListsOfAircraftOPerators", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "operator/operatorListsOfAircraftOPerators",
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
         .then((res) => res.json())
         .then((response) => {
           console.log("responseData", response);
@@ -90,7 +96,6 @@ export default function AircraftList() {
     "Charges per hour",
     "Speed",
     // "Date",
-    "CPH + Margin",
     "Update",
     "Delete",
   ];
@@ -99,7 +104,9 @@ export default function AircraftList() {
     <div className="ml-[200px] sm:ml-0 ">
       <div className="">
         <div className="flex items-center px-[20px] py-[20px]">
-          <p className="mr-[30px]">{`All (${operatorAircrafts ? operatorAircrafts.length : 0})`}</p>
+          <p className="mr-[30px]">{`All (${
+            operatorAircrafts ? operatorAircrafts.length : 0
+          })`}</p>
           <button
             onClick={() => dispatch(showModals())}
             className={`${styles.Button} mr-auto px-[10px] py-[5px] flex items-center `}
@@ -116,7 +123,9 @@ export default function AircraftList() {
                 fill="#171C26"
               />
             </svg>
-            <p className="pl-[11px] text-[16px] text-[#171C26] font-[600]">Add Aircraft Data</p>
+            <p className="pl-[11px] text-[16px] text-[#171C26] font-[600]">
+              Add Aircraft Data
+            </p>
           </button>
           <div className="flex sm:hidden">
             <svg
@@ -176,7 +185,10 @@ export default function AircraftList() {
             <thead>
               <tr className="">
                 {header.map((data, i) => (
-                  <th className="text-[12px] border border-x-0 p-[10px] " key={i}>
+                  <th
+                    className="text-[12px] border border-x-0 p-[10px] "
+                    key={i}
+                  >
                     {data}
                   </th>
                 ))}
@@ -186,7 +198,9 @@ export default function AircraftList() {
               {operatorAircrafts.length > 0 ? (
                 operatorAircrafts?.map((data1, i) => (
                   <tr key={data1._id + Math.random()}>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">{i + 1}</td>
+                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
+                      {i + 1}
+                    </td>
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.Aircraft_type}
                     </td>
@@ -205,9 +219,9 @@ export default function AircraftList() {
                     {/* <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {formatDate(data1.date)}
                     </td> */}
-                    <td className="border text-center border-x-0 text-[14px] p-[10px]">
+                    {/* <td className="border text-center border-x-0 text-[14px] p-[10px]">
                       {data1.margin}
-                    </td>
+                    </td> */}
                     <td className="border border-x-0 cursor-pointer text-[12px] p-[10px]">
                       <button
                         onClick={() => {
@@ -242,7 +256,7 @@ export default function AircraftList() {
                             .delete(
                               `${process.env.NEXT_PUBLIC_API_URL}operator/deleteAircraft/${data1._id}`,
                               {
-                                headers: { Authorization: `Bearer ${token}` },
+                                headers: {Authorization: `Bearer ${token}`},
                               }
                             )
                             .then((data) => {
@@ -261,7 +275,9 @@ export default function AircraftList() {
                             });
                         }}
                         className={`${
-                          disableBtn && clickedBtn == data1._id ? "opacity-[20%]" : "opacity-[100%]"
+                          disableBtn && clickedBtn == data1._id
+                            ? "opacity-[20%]"
+                            : "opacity-[100%]"
                         } bg-[#D97706] flex  items-center px-[10px] py-[5px] rounded-[4px] text-white mx-auto`}
                       >
                         <svg

@@ -1,25 +1,25 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "../Form/TextInput";
-import { showModals, addMedicalEquipment } from "@/store/slices";
-import { useCallback } from "react";
-import { DateInput } from "../Form/TextInput";
-import { useForm } from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {TextInput} from "../Form/TextInput";
+import {showModals, addMedicalEquipment} from "@/store/slices";
+import {useCallback} from "react";
+import {DateInput} from "../Form/TextInput";
+import {useForm} from "react-hook-form";
 import axios from "axios";
-import { Montserrat } from "next/font/google";
+import {Montserrat} from "next/font/google";
 import styles from "../Form/Input.module.css";
 import swal from "sweetalert";
-const montserrat = Montserrat({ subsets: ["latin"] });
+const montserrat = Montserrat({subsets: ["latin"]});
 const AddMedicalEquipmentModal = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.operator.showModal);
-  const { token } = useSelector((state) => state.operator);
+  const {token} = useSelector((state) => state.operator);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
   const loadMedicalEquipmentData = useCallback(() => {
@@ -29,7 +29,11 @@ const AddMedicalEquipmentModal = () => {
   }, [token]);
 
   return (
-    <div className={`${show ? "block" : "hidden"} w-[100vw] h-[100vh] absolute top-0 left-0`}>
+    <div
+      className={`${
+        show ? "block" : "hidden"
+      } w-[100vw] h-[100vh] absolute top-0 left-0`}
+    >
       <div className="w-[100vw] h-[100vh] bg-white opacity-[50%] z-[200] absolute top-0 left-0 z-100"></div>
       <div
         className={`bg-white shadow-md  absolute top-[80px]  z-[300] left-[50%] transform translate-x-[-50%]  w-[500px] px-[30px] px-[40px] sm:w-[310px]`}
@@ -52,7 +56,9 @@ const AddMedicalEquipmentModal = () => {
           </svg>
         </div>
 
-        <h1 className="text-[40px] my-[20px] sm:text-[30px]">Add New Data</h1>
+        <h1 className="text-[40px] my-[20px] sm:text-[30px]">
+          Equipment Details
+        </h1>
         <div className="w-[100%]">
           <TextInput
             className={"w-[100%]"}
@@ -60,37 +66,14 @@ const AddMedicalEquipmentModal = () => {
             name="equipment_name"
             register={register("equipment_name")}
           ></TextInput>
-          <div className="flex justify-between w-[100%]">
-            <TextInput
-              className={"w-[48%]"}
-              label={"Serial No"}
-              name="serial_no"
-              register={register("serial_no")}
-            ></TextInput>
-            <TextInput
-              className={"w-[48%] sm:text[8px]"}
-              label={"Category"}
-              register={register("category")}
-              name="category"
-            ></TextInput>
-          </div>
-          <div className="flex justify-between w-[100%]">
-            <TextInput
-              className={"w-[48%]"}
-              label={"Model"}
-              name="model"
-              register={register("model")}
-              // onChange={handleInputChange}
-            ></TextInput>
-            <TextInput
-              className={"w-[48%] "}
-              label={"Assigned Aircraft"}
-              name="assigned_aircraft"
-              register={register("assigned_aircraft")}
-            ></TextInput>
-          </div>
-          <div className={` flex flex-col w-full my-[10px]  relative ${styles.Input}`}>
-            <label className="bg-white left-[10px] absolute top-[-12px] sm:text-[15px]" htmlFor="">
+
+          <div
+            className={` flex flex-col w-full my-[10px]  relative ${styles.Input}`}
+          >
+            <label
+              className="bg-white left-[10px] absolute top-[-12px] sm:text-[15px]"
+              htmlFor=""
+            >
               Status
             </label>
             <select

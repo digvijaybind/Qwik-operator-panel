@@ -10,12 +10,14 @@ import {
   setUserId,
   setToken,
 } from "@/store/slices";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import swal from "sweetalert";
 export default function MedicalEquipmetsList() {
-  const { user_id, medicalEquipments, token } = useSelector((state) => state.operator);
+  const {user_id, medicalEquipments, token} = useSelector(
+    (state) => state.operator
+  );
 
   console.log(" user_id", user_id);
 
@@ -33,9 +35,13 @@ export default function MedicalEquipmetsList() {
 
   const loadAircraftData = useCallback(() => {
     if (token) {
-      fetch(process.env.NEXT_PUBLIC_API_URL + "operator/operatorListsOfAircraftOPerators", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      fetch(
+        process.env.NEXT_PUBLIC_API_URL +
+          "operator/operatorListsOfAircraftOPerators",
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
         .then((res) => res.json())
         .then((response) => {
           console.log("responseData", response);
@@ -82,21 +88,15 @@ export default function MedicalEquipmetsList() {
   //     })
   //     .catch((err) => console.log(err));
 
-  const header = [
-    "Id",
-    "Equipment Name",
-    "Serial Number",
-    "Category",
-    "Model",
-    "Assigned Aircraft",
-    "Status",
-  ];
+  const header = ["Id", "Equipment Name", "Status"];
 
   return (
     <div className="ml-[200px] sm:ml-0 ">
       <div className="">
         <div className="flex items-center px-[20px] py-[20px]">
-          <p className="mr-[30px]">{`All (${medicalEquipments ? medicalEquipments.length : 0})`}</p>
+          <p className="mr-[30px]">{`All (${
+            medicalEquipments ? medicalEquipments.length : 0
+          })`}</p>
           <button
             onClick={() => dispatch(showModals())}
             className={`${styles.Button} mr-auto px-[10px] py-[5px] flex items-center `}
@@ -113,7 +113,9 @@ export default function MedicalEquipmetsList() {
                 fill="#171C26"
               />
             </svg>
-            <p className="pl-[11px] text-[16px] text-[#171C26] font-[600]">Add Medical Equipment</p>
+            <p className="pl-[11px] text-[16px] text-[#171C26] font-[600]">
+              Add Medical Equipment
+            </p>
           </button>
           <div className="flex sm:hidden">
             <svg
@@ -169,11 +171,14 @@ export default function MedicalEquipmetsList() {
           </div>
         </div>
         <div className="overflow-x-auto h-[90vh]">
-          <table className="w-[1300px]">
+          <table className="w-full table-auto">
             <thead>
-              <tr className="">
+              <tr>
                 {header.map((data, i) => (
-                  <th className="text-[12px] border border-x-0 p-[10px] " key={i}>
+                  <th
+                    key={i}
+                    className="text-sm md:text-base lg:text-lg xl:text-xl border border-x-0 p-2 md:p-4"
+                  >
                     {data}
                   </th>
                 ))}
@@ -183,23 +188,13 @@ export default function MedicalEquipmetsList() {
               {medicalEquipments.length > 0 ? (
                 medicalEquipments?.map((item, i) => (
                   <tr key={item._id + Math.random()}>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">{i + 1}</td>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
+                    <td className="border text-center border-x-0 text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-4">
+                      {i + 1}
+                    </td>
+                    <td className="border text-center border-x-0 text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-4">
                       {item?.equipment_name}
                     </td>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
-                      {item?.serial_no}
-                    </td>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
-                      {item?.category}
-                    </td>
-                    <td className="border text-center border-x-0 text-[14px]  p-[10px]">
-                      {item?.model}
-                    </td>
-                    <td className="border text-center border-x-0 text-[14px] p-[10px]">
-                      {item?.assigned_aircraft}
-                    </td>
-                    <td className="border border-x-0 text-[14px] p-[10px] text-center font-medium">
+                    <td className="border border-x-0 text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-4 text-center font-medium">
                       {item?.status === "Available" ? (
                         <span className="text-green-600">Available</span>
                       ) : (
@@ -212,7 +207,7 @@ export default function MedicalEquipmetsList() {
                 <></>
               )}
             </tbody>
-            <tfoot className="h-[200px]"></tfoot>
+            <tfoot className="h-16"></tfoot>
           </table>
         </div>
       </div>
