@@ -8,7 +8,7 @@ const Pagin = () => {
           <div className="flex">
             {[1, 2, 3].map((el) => (
               <p
-                key={1}
+                key={"pagin-item-"+el}
                 className="px-[12px] py-[5px] rounded-[4px] bg-[#E0E0E0] mx-[5px]"
               >
                 {el}
@@ -26,7 +26,7 @@ const Pagin = () => {
               viewBox="0 0 30 25"
               fill="none"
             >
-              <g clip-path="url(#clip0_230_8833)">
+              <g clipPath="url(#clip0_230_8833)">
                 <path
                   d="M25 20.5859C25 20.8315 24.8829 21.067 24.6746 21.2406C24.4662 21.4143 24.1836 21.5118 23.8889 21.5118H6.11111C5.81643 21.5118 5.53381 21.4143 5.32544 21.2406C5.11706 21.067 5 20.8315 5 20.5859V10.8544C4.99988 10.7133 5.03846 10.5741 5.1128 10.4473C5.18713 10.3205 5.29524 10.2096 5.42889 10.1229L14.3178 4.36183C14.5128 4.2354 14.7529 4.16675 15 4.16675C15.2471 4.16675 15.4872 4.2354 15.6822 4.36183L24.5711 10.1229C24.7048 10.2096 24.8129 10.3205 24.8872 10.4473C24.9615 10.5741 25.0001 10.7133 25 10.8544V20.5859ZM22.7778 19.66V11.3063L15 6.26554L7.22222 11.3063V19.66H22.7778ZM9.44445 15.9563H20.5556V17.8081H9.44445V15.9563Z"
                   fill="black"
@@ -78,14 +78,14 @@ const Pagin = () => {
             <path
               d="M13.9867 12L8.60657 8L13.9867 4"
               stroke="#343A40"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
         <div className="flex">
           {[1, 2, 3, 4].map((el) => (
-            <p className="px-[10px] mr-[10px]" key={el}>
+            <p className="px-[10px] mr-[10px]" key={"pagin-"+el}>
               {el}
             </p>
           ))}
@@ -101,8 +101,8 @@ const Pagin = () => {
             <path
               d="M8.61389 12L13.994 8L8.61389 4"
               stroke="#343A40"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>

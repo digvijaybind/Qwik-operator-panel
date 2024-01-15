@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   showModal: false,
@@ -8,6 +8,7 @@ const initialState = {
   updateData: {},
   email_address: "",
   operatorAircrafts: [],
+  medicalEquipments: [],
   user_id: "",
   token: "",
 };
@@ -36,6 +37,12 @@ const operatorSlice = createSlice({
     setOperatorAircrafts(state, action) {
       state.operatorAircrafts = action.payload;
     },
+    setMedicalEquipments(state, action) {
+      state.medicalEquipments = action.payload;
+    },
+    addMedicalEquipment(state, action) {
+      state.medicalEquipments.push(action.payload);
+    },
 
     setUserId(state, action) {
       state.user_id = action.payload;
@@ -54,6 +61,8 @@ export const {
   setUpdatedata,
   setEmailAddress,
   setOperatorAircrafts,
+  setMedicalEquipments,
+  addMedicalEquipment,
   setUserId,
   setToken,
 } = operatorSlice.actions;

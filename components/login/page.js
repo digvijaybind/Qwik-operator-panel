@@ -128,7 +128,7 @@ const LoginComponent = () => {
                 ) : null}
                 <div className="flex flex-col h-[60px] md:h-auto items-start justify-start rounded-tl rounded-tr w-[512px] sm:w-full">
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     // onChange={handleChange}
                     onChange={formik.handleChange}
