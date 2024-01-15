@@ -77,7 +77,7 @@ const Nav = () => {
     },
     {
       icon: <img src="/images/medical.png" alt="" />,
-      name: "Medical equipments",
+      name: "Medical Equipments",
       path: "/medical-equipments",
     },
     {

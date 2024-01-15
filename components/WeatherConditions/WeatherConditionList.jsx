@@ -1,5 +1,4 @@
 "use client";
-import styles from "./AircraftList.module.css";
 import {
   showModals,
   showUpdateModal,
@@ -14,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import swal from "sweetalert";
-export default function AircraftStatus({ singleOperator }) {
+export default function WeatherEquipmentList() {
   const { user_id, operatorAircrafts, token } = useSelector((state) => state.operator);
 
   console.log(" user_id", user_id);
@@ -82,14 +81,11 @@ export default function AircraftStatus({ singleOperator }) {
   //     })
   //     .catch((err) => console.log(err));
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [disableBtn, show, show1, singleOperator]);
-  console.log("singleOperator", singleOperator);
-  const header = ["Id", "Aircraft Type", "Location", "Status"];
+  const header = ["Id", "Aircraft Type", "Location", ""];
 
   return (
     <div className="ml-[200px] sm:ml-0 ">
-      <div className="mt-3 mx-4">
+      <div className="">
         <div className="flex items-center px-[20px] py-[20px] justify-between">
           <p className="mr-[30px]">{`All (${operatorAircrafts ? operatorAircrafts.length : 0})`}</p>
           <div className="flex sm:hidden">
@@ -167,12 +163,18 @@ export default function AircraftStatus({ singleOperator }) {
                     <td className="border text-center border-x-0 text-[14px]  p-[10px]">
                       {data1.location}
                     </td>
-                    <td className="border border-x-0 cursor-pointer text-[14px] p-[10px] text-center font-semibold">
-                      {Math.random() < 0.5 ? (
-                        <span className="text-green-600">Available</span>
-                      ) : (
-                        <span className="text-red-600">Not Available</span>
-                      )}
+                    <td className="border border-x-0 cursor-pointer text-[12px] p-[10px]">
+                      <button
+                        onClick={() => {
+                          // dispatch(showUpdateModal());
+                          // dispatch(setIdToBeUpdated(data1._id));
+                          // dispatch(setUpdatedata(data1));
+                        }}
+                        className="bg-[#1D4ED8] flex items-center px-[10px] py-[5px] rounded-[4px] text-white mx-auto"
+                      >
+                        <p>Check Weather Condition</p>
+                        <img src="./images/weatherIcon.svg" alt="weather icon" className="w-[25px] ml-2" />
+                      </button>
                     </td>
                   </tr>
                 ))
